@@ -9,25 +9,37 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tasks_types")
+@Table(name = "patient_healths")
 @Data
+@ToString(exclude = "patient")
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "tasks")
 @EntityListeners(AuditingEntityListener.class)
-public class TaskType {
+public class PatientHealth {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "describe", nullable = false, length = 20)
-    private String describe;
+    @Column(name = "blood_pressure", nullable = false)
+    private Integer bloodPressure;
+
+    @Column(name = "heart_rate", nullable = false)
+    private Integer heartRate;
+
+    @Column(name = "oximetry", nullable = false)
+    private Integer oximetry;
+
+    @Column(name = "blood_glucose", nullable = false)
+    private Integer bloodGlucose;
+
+    @Column(name = "temperature", nullable = false)
+    private BigDecimal temperature;
 
     @CreatedDate
     @Column(name = "create_date", nullable = false)
@@ -37,8 +49,9 @@ public class TaskType {
     @Column(name = "change_date", nullable = false)
     private LocalDateTime changeDate;
 
-    @OneToMany(mappedBy = "taskType", fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_patient")
     @JsonIgnore
-    private List<Task> tasks;
+    private Patient patient;
 
 }

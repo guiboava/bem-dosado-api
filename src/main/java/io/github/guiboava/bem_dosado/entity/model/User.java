@@ -7,8 +7,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,6 +21,7 @@ import java.util.UUID;
 @Data
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = {"patients", "tasks"})
+@EntityListeners(AuditingEntityListener.class)
 public class User {
 
     @Id
@@ -56,6 +61,14 @@ public class User {
 
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
+
+    @CreatedDate
+    @Column(name = "create_date", nullable = false)
+    private LocalDateTime createDate;
+
+    @LastModifiedDate
+    @Column(name = "change_date",nullable = false)
+    private LocalDateTime changeDate;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_patient", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_patient"))

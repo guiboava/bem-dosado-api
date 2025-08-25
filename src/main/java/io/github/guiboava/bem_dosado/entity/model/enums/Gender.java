@@ -1,6 +1,7 @@
 package io.github.guiboava.bem_dosado.entity.model.enums;
 
 public enum Gender {
+    
     M("Homem"),
     F("Mulher");
 

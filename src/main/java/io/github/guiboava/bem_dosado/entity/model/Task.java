@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,6 +16,7 @@ import java.util.UUID;
 @Table(name = "tasks")
 @Data
 @EqualsAndHashCode(of = "id")
+@EntityListeners(AuditingEntityListener.class)
 public class Task {
 
     @Id
@@ -27,7 +31,13 @@ public class Task {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime scheduledDate;
 
-    /*FALTA AQUI A DEPENDENCIA, MAS DEVO TROCAR UMA IDEIA COM A ANA PRIMEIRO, PARA ALINHAR A COMPREENSÃO DA PERTINENCIA DESTE CAMPO NO PATIENTE E NÃO AQUI*/
+    @CreatedDate
+    @Column(name = "create_date", nullable = false)
+    private LocalDateTime createDate;
+
+    @LastModifiedDate
+    @Column(name = "change_date", nullable = false)
+    private LocalDateTime changeDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_task_type")
