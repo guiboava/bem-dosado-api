@@ -1,6 +1,5 @@
 package io.github.guiboava.bem_dosado.controller.dto;
 
-import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.entity.model.enums.Dependency;
 import io.github.guiboava.bem_dosado.entity.model.enums.Gender;
 
@@ -9,19 +8,14 @@ import java.util.UUID;
 
 public record PatientResponseDTO(UUID id,
                                  String name,
+                                 String cpf,
                                  LocalDate birthDate,
                                  Gender gender,
                                  String cep,
-                                 Dependency dependency
-) {
-    public Patient createPatient() {
-        Patient patient = new Patient();
-        patient.setId(id);
-        patient.setName(name);
-        patient.setBirthDate(birthDate);
-        patient.setGender(gender);
-        patient.setCep(cep);
-        patient.setDependency(dependency);
-        return patient;
-    }
+                                 Dependency dependency,
+                                 String healthPlan,
+                                 String cardNumber,
+                                 String allergies,
+                                 String medications,
+                                 String note) {
 }

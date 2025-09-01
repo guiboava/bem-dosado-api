@@ -1,13 +1,17 @@
 package io.github.guiboava.bem_dosado.service;
 
 import io.github.guiboava.bem_dosado.entity.model.User;
+import io.github.guiboava.bem_dosado.entity.model.enums.Gender;
+import io.github.guiboava.bem_dosado.entity.model.enums.UserType;
 import io.github.guiboava.bem_dosado.exception.OperationNotPermittedException;
 import io.github.guiboava.bem_dosado.repository.UserRepository;
 import io.github.guiboava.bem_dosado.validator.UserValidator;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,34 +20,61 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final UserValidator userValidator;
+    private final UserRepository repository;
+    private final UserValidator validator;
 
     public User save(User user) {
-        userValidator.validate(user);
-        return userRepository.save(user);
+        validator.validate(user);
+        return repository.save(user);
     }
 
-    //IMPLEMENTAR UMA FORMA GENERICA DE USAR VARIOS PARAMETROS.
     public List<User> getUsers() {
-        return userRepository.findAll();
+        return repository.findAll();
     }
 
     public Optional<User> getById(UUID id) {
-        return userRepository.findById(id);
+        return repository.findById(id);
     }
 
     public void delete(User user) {
         //Validar Relações futuramente.
-        userRepository.delete(user);
+        repository.delete(user);
     }
 
     public void update(User user) {
         if (user.getId() == null) {
             throw new OperationNotPermittedException("Para atualizar o cadastro de usuario é nescessário que o usuario esteja salvo na base.");
         }
-        userValidator.validate(user);
-        userRepository.save(user);
+        validator.validate(user);
+        repository.save(user);
     }
 
+    public List<User> searchByExample(String name,
+                                      String userName,
+                                      String email,
+                                      String cpf,
+                                      UserType userType,
+                                      Gender gender,
+                                      String phoneNumber,
+                                      LocalDate birthDate) {
+
+        var user = new User();
+        user.setName(name);
+        user.setUserName(userName);
+        user.setEmail(email);
+        user.setCpf(cpf);
+        user.setUserType(userType);
+        user.setGender(gender);
+        user.setPhoneNumber(phoneNumber);
+        user.setBirthDate(birthDate);
+
+        ExampleMatcher matcher = ExampleMatcher
+                .matching()
+                .withIgnoreNullValues()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<User> userExample = Example.of(user, matcher);
+        return repository.findAll(userExample);
+
+    }
 }

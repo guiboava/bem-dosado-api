@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -25,12 +26,15 @@ import java.util.UUID;
 public class Patient {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "name", nullable = false, length = 500)
     private String name;
+
+    @Column(name = "cpf", nullable = false, length = 14, unique = true)
+    private String cpf;
 
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
@@ -46,6 +50,21 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private Dependency dependency;
 
+    @Column(name = "health_plan",nullable = false,length = 50)
+    private String healthPlan;
+
+    @Column(name = "card_number",nullable = false,length = 20)
+    private String cardNumber;
+
+    @Column(name = "allergies",nullable = false,length = 500)
+    private String allergies;
+
+    @Column(name = "medications",nullable = false, length = 500)
+    private String medications;
+
+    @Column(name = "note",nullable = false,length = 1000)
+    private String note;
+
     @CreatedDate
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
@@ -56,7 +75,7 @@ public class Patient {
 
     @ManyToMany(mappedBy = "patients", fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<User> users;
+    private Set<User> users;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     @JsonIgnore

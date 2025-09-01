@@ -1,23 +1,37 @@
 package io.github.guiboava.bem_dosado.controller.dto;
 
-import io.github.guiboava.bem_dosado.entity.model.PatientHealth;
-
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
-public record PatientHealthRequestDTO(Integer bloodPressure,
-                                      Integer heartRate,
-                                      Integer oximetry,
-                                      Integer bloodGlucose,
-                                      BigDecimal temperature) {
+public record PatientHealthRequestDTO(
 
-    public PatientHealth createPatientHealth() {
-        PatientHealth patientHealth = new PatientHealth();
-        patientHealth.setBloodPressure(bloodPressure);
-        patientHealth.setHeartRate(heartRate);
-        patientHealth.setOximetry(oximetry);
-        patientHealth.setBloodGlucose(bloodGlucose);
-        patientHealth.setTemperature(temperature);
-        return patientHealth;
-    }
+        @NotNull(message = "A pressão arterial não pode ser nula")
+        @Min(value = 40, message = "A pressão arterial mínima deve ser no mínimo 40 mmHg")
+        @Max(value = 250, message = "A pressão arterial máxima deve ser no máximo 250 mmHg")
+        Integer bloodPressure,
 
-}
+        @NotNull(message = "A frequência cardíaca não pode ser nula")
+        @Min(value = 30, message = "A frequência cardíaca mínima deve ser no mínimo 30 bpm")
+        @Max(value = 220, message = "A frequência cardíaca máxima deve ser no máximo 220 bpm")
+        Integer heartRate,
+
+        @NotNull(message = "A oximetria não pode ser nula")
+        @Min(value = 50, message = "A oximetria mínima deve ser no mínimo 50%")
+        @Max(value = 100, message = "A oximetria máxima deve ser no máximo 100%")
+        Integer oximetry,
+
+        @NotNull(message = "A glicemia não pode ser nula")
+        @Min(value = 40, message = "A glicemia mínima deve ser no mínimo 40 mg/dL")
+        @Max(value = 600, message = "A glicemia máxima deve ser no máximo 600 mg/dL")
+        Integer bloodGlucose,
+
+        @NotNull(message = "A temperatura não pode ser nula")
+        @DecimalMin(value = "30.0", message = "A temperatura mínima deve ser no mínimo 30°C")
+        @DecimalMax(value = "45.0", message = "A temperatura máxima deve ser no máximo 45°C")
+        BigDecimal temperature
+
+) { }

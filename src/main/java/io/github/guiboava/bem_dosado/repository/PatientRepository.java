@@ -8,4 +8,9 @@ import java.util.UUID;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
+
+    boolean existsByCpfAndIdNot(String cpf, UUID id);
+
+    boolean existsByCpf(String cpf);
+
 }

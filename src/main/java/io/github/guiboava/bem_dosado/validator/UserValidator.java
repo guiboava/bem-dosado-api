@@ -14,6 +14,11 @@ public class UserValidator {
 
     public void validate(User user) {
 
+        duplicateRegister(user);
+
+    }
+
+    private void duplicateRegister(User user) {
         if (user.getId() == null) {
             if (userRepository.existsByUserName(user.getUserName())) {
                 throw new DuplicateRegisterException("Já existe um usuário com este nome de usuário.");
@@ -36,4 +41,5 @@ public class UserValidator {
             }
         }
     }
+
 }

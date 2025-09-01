@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Task {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "id", nullable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
