@@ -1,17 +1,17 @@
 package io.github.guiboava.bem_dosado.controller.dto;
 
-import io.github.guiboava.bem_dosado.entity.model.PatientContact;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-public record PatientContactRequestDTO(String name,
-                                       String phoneNumber,
-                                       String affiliation) {
+public record PatientContactRequestDTO(
+        @NotBlank(message = "O nome não pode estar vazio")
+        @Size(max = 100, message = "O nome deve ter no máximo 100 caracteres")
+        String name,
 
-    public PatientContact createPatientContact() {
-        PatientContact patientContact = new PatientContact();
-        patientContact.setName(name);
-        patientContact.setPhoneNumber(phoneNumber);
-        patientContact.setAffiliation(affiliation);
-        return patientContact;
-    }
+        @NotBlank(message = "O telefone não pode estar vazio")
+        @Size(min = 10, max = 15)
+        String phoneNumber,
 
+        @Size(max = 50, message = "A afiliação deve ter no máximo 50 caracteres")
+        String affiliation) {
 }

@@ -30,8 +30,7 @@ public class PatientHealthController implements GenericController {
 
     @PostMapping
     public ResponseEntity<Void> createPatientHealth(@PathVariable("patientId") UUID patientId, @RequestBody @Valid PatientHealthRequestDTO dto) {
-        Patient patient = patientService.getById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Paciente não encontrado"));
+        Patient patient = getPatientOrThrow(patientId);
         PatientHealth patientHealth = mapper.toEntity(dto);
 
         patientHealth.setPatient(patient);
@@ -49,8 +48,7 @@ public class PatientHealthController implements GenericController {
             @PathVariable("healthId") UUID healthId,
             @RequestBody @Valid PatientHealthRequestDTO dto) {
 
-        Patient patient = patientService.getById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Paciente não encontrado"));
+        Patient patient = getPatientOrThrow(patientId);
 
         PatientHealth patientHealth = patientHealthService.getByPatientIdAndHealthId(patientId, healthId)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dado de saúde para o id " + healthId));
@@ -66,8 +64,7 @@ public class PatientHealthController implements GenericController {
             @PathVariable("patientId") UUID patientId,
             @PathVariable("healthId") UUID healthId) {
 
-        Patient patient = patientService.getById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Paciente não encontrado"));
+        Patient patient = getPatientOrThrow(patientId);
 
         PatientHealth patientHealth = patientHealthService
                 .getByPatientIdAndHealthId(patientId, healthId)
@@ -82,8 +79,7 @@ public class PatientHealthController implements GenericController {
     @GetMapping
     public ResponseEntity<List<PatientHealthResponseDTO>> getAllByPatientId(@PathVariable("patientId") UUID patientId) {
 
-        Patient patient = patientService.getById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Paciente não encontrado"));
+        Patient patient = getPatientOrThrow(patientId);
 
         List<PatientHealthResponseDTO> list = patientHealthService.getByPatientId(patientId);
         return ResponseEntity.ok(list);
@@ -96,6 +92,11 @@ public class PatientHealthController implements GenericController {
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dado de saúde para o id " + healthId));
+    }
+
+    private Patient getPatientOrThrow(UUID patientId) {
+        return patientService.getById(patientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Paciente não encontrado"));
     }
 
 }
