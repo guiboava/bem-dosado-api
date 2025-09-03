@@ -33,6 +33,7 @@ public class UserService {
     }
 
     public Optional<User> getById(UUID id) {
+
         return repository.findById(id);
     }
 

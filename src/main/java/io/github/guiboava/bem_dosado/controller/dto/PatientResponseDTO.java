@@ -19,3 +19,5 @@ public record PatientResponseDTO(UUID id,
                                  String medications,
                                  String note) {
 }
+
+

@@ -6,10 +6,10 @@ import io.github.guiboava.bem_dosado.controller.mappers.PatientMapper;
 import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.entity.model.enums.Dependency;
 import io.github.guiboava.bem_dosado.entity.model.enums.Gender;
+import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,7 +64,7 @@ public class PatientController implements GenericController {
         return service.getById(patientId)
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum dado de paciente."));
     }
 
     @DeleteMapping("/{id}")
@@ -79,17 +79,18 @@ public class PatientController implements GenericController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updatePatient(@PathVariable("id") String id, @RequestBody @Valid PatientRequestDTO dto) {
-        return service.getById(UUID.fromString(id))
-                .map(patient -> {
-                    mapper.updateEntityFromDto(dto, patient);
+    public ResponseEntity<Void> updatePatient(
+            @PathVariable UUID id,
+            @RequestBody @Valid PatientRequestDTO dto) {
 
-                    service.update(patient);
+        Patient patient = service.getById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Paciente não encontrado"));
 
-                    return ResponseEntity.noContent().build();
-                })
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Paciente não encontrado!"));
+        mapper.updateEntityFromDto(dto, patient);
+        service.update(patient);
+
+        return ResponseEntity.noContent().build();
     }
+
 
 }

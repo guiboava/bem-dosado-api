@@ -6,17 +6,16 @@ import io.github.guiboava.bem_dosado.controller.mappers.UserMapper;
 import io.github.guiboava.bem_dosado.entity.model.User;
 import io.github.guiboava.bem_dosado.entity.model.enums.Gender;
 import io.github.guiboava.bem_dosado.entity.model.enums.UserType;
+import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -61,7 +60,7 @@ public class UserController implements GenericController {
         return service.getById(userId)
                 .map(mapper::toDTO)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum dado de usuário para o paciente."));
     }
 
     @DeleteMapping("/{id}")
@@ -76,17 +75,18 @@ public class UserController implements GenericController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable("id") String id, @RequestBody @Valid UserRequestDTO dto) {
-        return service.getById(UUID.fromString(id))
-                .map(user -> {
-                    mapper.updateEntityFromDto(dto, user);
+    public ResponseEntity<Void> updateUser(
+            @PathVariable UUID id,
+            @RequestBody @Valid UserRequestDTO dto) {
 
-                    service.update(user);
+        User user = service.getById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
-                    return ResponseEntity.noContent().build();
-                })
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Usuário não encontrado!"));
+        mapper.updateEntityFromDto(dto, user);
+        service.update(user);
+
+        return ResponseEntity.noContent().build();
     }
+
 
 }
