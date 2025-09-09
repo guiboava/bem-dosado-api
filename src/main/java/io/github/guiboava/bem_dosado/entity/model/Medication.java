@@ -13,11 +13,11 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "medicaments")
+@Table(name = "medications")
 @Data
 @EqualsAndHashCode(of = "id")
 @EntityListeners(AuditingEntityListener.class)
-public class Medicament {
+public class Medication {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -43,7 +43,7 @@ public class Medicament {
     @Column(name = "change_date", nullable = false)
     private LocalDateTime changeDate;
 
-    @ManyToMany(mappedBy = "medicaments")
+    @ManyToMany(mappedBy = "medications")
     private Set<Task> Tasks = new HashSet<>();
 
 }

@@ -58,10 +58,10 @@ public class Task {
 
     @ManyToMany
     @JoinTable(
-            name = "tasks_medicaments",
+            name = "tasks_medications",
             joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "medicaments_id")
+            inverseJoinColumns = @JoinColumn(name = "medications_id")
     )
-    private Set<Medicament> medicaments = new HashSet<>();
+    private Set<Medication> medications = new HashSet<>();
 
 }

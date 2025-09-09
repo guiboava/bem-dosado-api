@@ -3,7 +3,7 @@ package io.github.guiboava.bem_dosado.controller.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record MedicamentRequestDTO(
+public record MedicationRequestDTO(
         @NotBlank(message = "O nome do medicamento é obrigatório")
         String name,
 
