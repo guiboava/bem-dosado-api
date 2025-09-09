@@ -4,6 +4,7 @@ import io.github.guiboava.bem_dosado.controller.dto.PatientContactRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientContactResponseDTO;
 import io.github.guiboava.bem_dosado.entity.model.PatientContact;
 import io.github.guiboava.bem_dosado.util.NumberUtils;
+import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -19,7 +20,7 @@ public abstract class PatientContactMapper {
     @Mapping(target = "phoneNumber", qualifiedByName = "onlyDigits")
     @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "changeDate", ignore = true)
-    public abstract void updateEntityFromDto(PatientContactRequestDTO dto, @MappingTarget PatientContact patientContact);
+    public abstract void updateEntityFromDto(@Valid  PatientContactRequestDTO dto, @MappingTarget PatientContact patientContact);
 
     public abstract PatientContactResponseDTO toDTO(PatientContact patientContact);
 

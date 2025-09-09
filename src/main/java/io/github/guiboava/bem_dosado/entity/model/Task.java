@@ -10,6 +10,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -53,5 +55,13 @@ public class Task {
     @JoinColumn(name = "id_user")
     @JsonIgnore
     private User user;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tasks_medicaments",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "medicaments_id")
+    )
+    private Set<Medicament> medicaments = new HashSet<>();
 
 }
