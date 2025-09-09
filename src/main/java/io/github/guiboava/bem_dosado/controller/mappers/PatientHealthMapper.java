@@ -12,6 +12,8 @@ public abstract class PatientHealthMapper {
 
     public abstract PatientHealth toEntity(PatientHealthRequestDTO dto);
 
+    @Mapping(target = "createDate", ignore = true)
+    @Mapping(target = "changeDate", ignore = true)
     public abstract void updateEntityFromDto(PatientHealthRequestDTO dto, @MappingTarget PatientHealth patientHealth);
 
     public abstract PatientHealthResponseDTO toDTO(PatientHealth patientHealth);

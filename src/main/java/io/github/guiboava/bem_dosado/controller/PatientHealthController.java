@@ -24,8 +24,9 @@ import java.util.UUID;
 public class PatientHealthController implements GenericController {
 
     private final PatientHealthService patientHealthService;
-    private final PatientService patientService;
     private final PatientHealthMapper mapper;
+    private final PatientService patientService;
+
 
 
     @PostMapping
@@ -74,7 +75,6 @@ public class PatientHealthController implements GenericController {
 
         return ResponseEntity.noContent().build();
     }
-
 
     @GetMapping
     public ResponseEntity<List<PatientHealthResponseDTO>> getAllByPatientId(@PathVariable("patientId") UUID patientId) {
