@@ -1,13 +1,10 @@
 package io.github.guiboava.bem_dosado.controller.dto;
 
-import io.github.guiboava.bem_dosado.entity.model.TaskType;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-public record TaskTypeRequestDTO(String describe) {
-
-    public TaskType createTaskType() {
-        TaskType taskType = new TaskType();
-        taskType.setDescribe(describe);
-        return taskType;
-    }
-
+public record TaskTypeRequestDTO(
+        @NotBlank(message = "A descrição do tipo de tarefa é obrigatória")
+        @Size(max = 50, message = "A descrição não pode ter mais de 50 caracteres")
+        String describe) {
 }

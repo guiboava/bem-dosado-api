@@ -72,7 +72,7 @@ public class User {
     private LocalDateTime changeDate;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_patient", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_patient"))
+    @JoinTable(name = "users_patients", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_patient"))
     @JsonIgnore
     private Set<Patient> patients;
 

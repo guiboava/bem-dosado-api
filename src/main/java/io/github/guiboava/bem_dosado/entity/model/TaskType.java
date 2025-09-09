@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tasks_types")
+@Table(name = "task_types")
 @Data
 @EqualsAndHashCode(of = "id")
 @ToString(exclude = "tasks")
