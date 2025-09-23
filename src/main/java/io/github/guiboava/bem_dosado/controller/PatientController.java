@@ -47,10 +47,10 @@ public class PatientController implements GenericController {
                                                                   @RequestParam(value = "healthPlan", required = false) String healthPlan,
                                                                   @RequestParam(value = "cardNumber", required = false) String cardNumber,
                                                                   @RequestParam(value = "allergies", required = false) String allergies,
-                                                                  @RequestParam(value = "medications", required = false) String medications,
+                                                                  @RequestParam(value = "medications", required = false) String medicationsDescription,
                                                                   @RequestParam(value = "note", required = false) String note
     ) {
-        List<Patient> searchPatients = service.searchByExample(name, cpf, birthDate, gender, cep, dependency, healthPlan, cardNumber, allergies, medications, note);
+        List<Patient> searchPatients = service.searchByExample(name, cpf, birthDate, gender, cep, dependency, healthPlan, cardNumber, allergies, medicationsDescription, note);
         List<PatientResponseDTO> list = searchPatients.stream()
                 .map(mapper::toDTO)
                 .toList();

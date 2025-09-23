@@ -33,7 +33,7 @@ public class PatientHealthService {
                     .map(mapper::toDTO)
                     .toList();
         }
-        throw new IllegalArgumentException("Para buscar a saúde de um paciente, é necessário que o paciente já esteja salvo na base.");
+        throw new OperationNotPermittedException("Para buscar a saúde de um paciente, é necessário que o paciente já esteja salvo na base.");
     }
 
     public Optional<PatientHealth> getByPatientIdAndHealthId(UUID patientId, UUID healthId) {
@@ -43,7 +43,7 @@ public class PatientHealthService {
             Patient patient = optionalPatient.get();
             return repository.findByIdAndPatient(healthId, patient);
         }
-        throw new IllegalArgumentException("Para buscar a saúde de um paciente, é necessário que o paciente já esteja salvo na base.");
+        throw new OperationNotPermittedException("Para buscar a saúde de um paciente, é necessário que o paciente já esteja salvo na base.");
     }
 
     public PatientHealth save(PatientHealth patientHealth) {

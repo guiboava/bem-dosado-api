@@ -2,6 +2,8 @@ package io.github.guiboava.bem_dosado.repository;
 
 import io.github.guiboava.bem_dosado.entity.model.Task;
 import io.github.guiboava.bem_dosado.entity.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +15,9 @@ import java.util.UUID;
 public interface TaskRepository extends JpaRepository<Task, UUID> {
     List<Task> findByUser(User user);
 
-    Optional<Task> findByIdAndUser(UUID taskId, User userId);
+    Optional<Task> findByIdAndUser(UUID taskId, User user);
+
+    //Casa não de nenhum erro em usar direto do service remover este codigo.
+    Page<Task> findByUser(User user, Pageable pageable);
+
 }

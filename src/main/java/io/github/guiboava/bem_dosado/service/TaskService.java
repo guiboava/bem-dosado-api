@@ -8,6 +8,9 @@ import io.github.guiboava.bem_dosado.exception.OperationNotPermittedException;
 import io.github.guiboava.bem_dosado.repository.TaskRepository;
 import io.github.guiboava.bem_dosado.validator.TaskValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,18 +31,23 @@ public class TaskService {
         return repository.save(task);
     }
 
-    public List<TaskResponseDTO> getByUserId(UUID userId) {
+    public Page<Task> getByUserId(
+            UUID userId,
+            Integer page,
+            Integer pageSize
+            ) {
 
         Optional<User> optionalUser = userService.getById(userId);
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            List<Task> taskRecords = repository.findByUser(user);
-            return taskRecords.stream()
-                    .map(mapper::toDTO)
-                    .toList();
+            Pageable pageRequest = PageRequest.of(page,pageSize);
+
+            return repository.findByUser(user,pageRequest);
+
+
         }
-        throw new IllegalArgumentException("Para buscar as tarefas de um usuario, é necessário que o usuario já esteja salvo na base.");
+        throw new OperationNotPermittedException("Para buscar as tarefas de um usuario, é necessário que o usuario já esteja salvo na base.");
     }
 
     public Optional<Task> getByIdAndUserId( UUID taskId, UUID userId) {
@@ -49,7 +57,7 @@ public class TaskService {
             User User = optionalUser.get();
             return repository.findByIdAndUser(taskId, User);
         }
-        throw new IllegalArgumentException("Para buscar as tarefas de um usuario, é necessário que o usuario já esteja salvo na base.");
+        throw new OperationNotPermittedException("Para buscar as tarefas de um usuario, é necessário que o usuario já esteja salvo na base.");
     }
 
 

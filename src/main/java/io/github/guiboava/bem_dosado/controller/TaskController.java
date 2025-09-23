@@ -1,26 +1,28 @@
 package io.github.guiboava.bem_dosado.controller;
 
 
+import io.github.guiboava.bem_dosado.controller.dto.PageDTO;
 import io.github.guiboava.bem_dosado.controller.dto.TaskRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.TaskResponseDTO;
 import io.github.guiboava.bem_dosado.controller.mappers.TaskMapper;
-import io.github.guiboava.bem_dosado.entity.model.Patient;
-import io.github.guiboava.bem_dosado.entity.model.Task;
-import io.github.guiboava.bem_dosado.entity.model.TaskType;
-import io.github.guiboava.bem_dosado.entity.model.User;
+import io.github.guiboava.bem_dosado.entity.model.*;
 import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
+import io.github.guiboava.bem_dosado.repository.MedicationRepository;
 import io.github.guiboava.bem_dosado.service.PatientService;
 import io.github.guiboava.bem_dosado.service.TaskService;
 import io.github.guiboava.bem_dosado.service.TaskTypeService;
 import io.github.guiboava.bem_dosado.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users/{userId}/tasks")
@@ -32,6 +34,7 @@ public class TaskController implements GenericController {
     private final UserService userService;
     private final PatientService patientService;
     private final TaskTypeService taskTypeService;
+    private final MedicationRepository medicationRepository;
 
     @PostMapping
     public ResponseEntity<Void> createUserTask(@PathVariable("userId") UUID userId, @RequestBody @Valid TaskRequestDTO dto) {
@@ -42,6 +45,12 @@ public class TaskController implements GenericController {
 
         Task task = mapper.toEntity(dto);
 
+        Set<Medication> medications = dto.medicationsIds().stream()
+                .map(medicationId -> medicationRepository.findById(medicationId)
+                        .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado o medicamento: " + medicationId)))
+                .collect(Collectors.toSet());
+
+        task.setMedications(medications);
         task.setUser(user);
         task.setPatient(patient);
         task.setTaskType(taskType);
@@ -91,12 +100,31 @@ public class TaskController implements GenericController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TaskResponseDTO>> getAllByUserId(@PathVariable("userId") UUID userId) {
+    public ResponseEntity<PageDTO<TaskResponseDTO>> getAllByUserId(
+            @PathVariable("userId")
+            UUID userId,
+            @RequestParam(value = "page", defaultValue = "0")
+            Integer page,
+            @RequestParam(value = "pageSize", defaultValue = "10")
+            Integer pageSize
+    ) {
 
         getUserOrThrow(userId);
 
-        List<TaskResponseDTO> list = taskService.getByUserId(userId);
-        return ResponseEntity.ok(list);
+        Page<Task> taskPage = taskService.getByUserId(userId, page, pageSize);
+        List<TaskResponseDTO> dtos = taskPage.getContent().stream()
+                .map(mapper::toDTO)
+                .toList();
+
+        PageDTO<TaskResponseDTO> result = new PageDTO<>(
+                dtos,
+                taskPage.getNumber(),
+                taskPage.getSize(),
+                taskPage.getTotalElements(),
+                taskPage.getTotalPages()
+        );
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{taskId}")

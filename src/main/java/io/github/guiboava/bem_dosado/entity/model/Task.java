@@ -33,6 +33,9 @@ public class Task {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime scheduledDate;
 
+    @Column(name = "priority", length = 1, nullable = false)
+    Integer priority;
+
     @CreatedDate
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;

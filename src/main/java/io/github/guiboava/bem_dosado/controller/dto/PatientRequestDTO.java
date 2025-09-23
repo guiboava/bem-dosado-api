@@ -41,8 +41,8 @@ public record PatientRequestDTO(
         @Size(max = 500, message = "As alergias devem ter no máximo 500 caracteres")
         String allergies,
 
-        @Size(max = 500, message = "Os medicamentos devem ter no máximo 500 caracteres")
-        String medications,
+        @Size(max = 500, message = "A descrição dos medicamentos devem ter no máximo 500 caracteres")
+        String medicationsDescription,
 
         @Size(max = 1000, message = "A observação deve ter no máximo 1000 caracteres")
         String note) {

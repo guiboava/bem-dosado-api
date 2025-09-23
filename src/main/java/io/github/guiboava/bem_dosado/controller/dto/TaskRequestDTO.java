@@ -1,11 +1,10 @@
 package io.github.guiboava.bem_dosado.controller.dto;
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import io.github.guiboava.bem_dosado.entity.model.Medication;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 public record TaskRequestDTO(
@@ -18,10 +17,18 @@ public record TaskRequestDTO(
         @FutureOrPresent(message = "A data agendada deve ser no presente ou no futuro")
         LocalDateTime scheduledDate,
 
+        @NotNull(message = "O nível de prioridade deve ser informado")
+        @Min(value = 1, message = "O nível deve ser no mínimo 1")
+        @Max(value = 5, message = "O nível deve ser no máximo 5")
+        Integer priority,
+
         @NotNull(message = "O paciente é obrigatório")
         UUID patientId,
 
         @NotNull(message = "O paciente é obrigatório")
-        UUID taskTypeId
+        UUID taskTypeId,
+
+        Set<UUID> medicationsIds
+
 ) {
 }

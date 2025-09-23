@@ -37,7 +37,7 @@ public class PatientService {
                                          String healthPlan,
                                          String cardNumber,
                                          String allergies,
-                                         String medications,
+                                         String medicationsDescription ,
                                          String note) {
         var patient = new Patient();
         patient.setName(name);
@@ -49,7 +49,7 @@ public class PatientService {
         patient.setHealthPlan(healthPlan);
         patient.setCardNumber(cardNumber);
         patient.setAllergies(allergies);
-        patient.setMedications(medications);
+        patient.setMedicationsDescription (medicationsDescription);
         patient.setNote(note);
 
         ExampleMatcher matcher = ExampleMatcher

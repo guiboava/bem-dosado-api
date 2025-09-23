@@ -23,6 +23,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleUnhandledException(RuntimeException e, HttpServletRequest request) {
+        System.out.println(e.getMessage());
         return new ErrorResponse(LocalDateTime.now(), HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Ocorreu um erro inesperado, entre em contato com a administração.",
                 List.of(), request.getRequestURI());

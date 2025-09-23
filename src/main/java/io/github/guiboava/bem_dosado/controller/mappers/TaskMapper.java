@@ -13,7 +13,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Mapper(componentModel = "spring", uses = {PatientMapper.class, TaskType.class})
+@Mapper(componentModel = "spring", uses = {PatientMapper.class, TaskType.class, MedicationMapper.class})
 public abstract class TaskMapper {
 
     @Autowired
@@ -34,5 +34,6 @@ public abstract class TaskMapper {
 
     @Mapping(target = "patientId", source = "patient.id")
     @Mapping(target = "taskTypeId", source = "taskType.id")
+    @Mapping(target = "medications", source = "medications")
     public abstract TaskResponseDTO toDTO(Task task);
 }
