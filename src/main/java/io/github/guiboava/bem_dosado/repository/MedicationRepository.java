@@ -8,4 +8,9 @@ import java.util.UUID;
 
 @Repository
 public interface MedicationRepository extends JpaRepository<Medication, UUID> {
+
+    boolean existsByName(String name);
+
+    boolean existsByNameAndIdNot(String name, UUID id);
+
 }

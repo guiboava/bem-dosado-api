@@ -1,9 +1,11 @@
 package io.github.guiboava.bem_dosado.service;
 
+import io.github.guiboava.bem_dosado.controller.dto.MedicationRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.MedicationResponseDTO;
 import io.github.guiboava.bem_dosado.controller.mappers.MedicationMapper;
 import io.github.guiboava.bem_dosado.entity.model.Medication;
 import io.github.guiboava.bem_dosado.exception.OperationNotPermittedException;
+import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.repository.MedicationRepository;
 import io.github.guiboava.bem_dosado.validator.MedicationValidator;
 import lombok.RequiredArgsConstructor;
@@ -32,18 +34,23 @@ public class MedicationService {
 
     }
 
-    public void update(Medication medication) {
+    public void update(UUID medicationId, MedicationRequestDTO dto) {
 
-        if (medication.getId() == null) {
-            throw new OperationNotPermittedException("Para atualizar o cadastro de um medicamento é nescessário que o dado esteja salvo na base.");
-        }
+        Medication medication = getById(medicationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado medicamento para o id " + medicationId));
+
+        mapper.updateEntityFromDto(dto, medication);
 
         validator.validate(medication);
         repository.save(medication);
 
     }
 
-    public void delete(Medication medication) {
+    public void delete(UUID medicationId) {
+
+        Medication medication = getById(medicationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado medicamento para o id " + medicationId));
+
         repository.delete(medication);
     }
 
@@ -54,6 +61,11 @@ public class MedicationService {
         return medications.stream()
                 .map(mapper::toDTO)
                 .toList();
+    }
+    public MedicationResponseDTO getByIdDTO(UUID id) {
+        Medication medication = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Medicamento não encontrado: " + id));
+        return mapper.toDTO(medication);
     }
 
 }

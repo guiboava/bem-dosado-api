@@ -4,7 +4,6 @@ import io.github.guiboava.bem_dosado.controller.dto.MedicationRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.MedicationResponseDTO;
 import io.github.guiboava.bem_dosado.controller.mappers.MedicationMapper;
 import io.github.guiboava.bem_dosado.entity.model.Medication;
-import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.service.MedicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +26,9 @@ public class MedicationController implements GenericController {
     public ResponseEntity<Void> createMedication(@RequestBody @Valid MedicationRequestDTO dto) {
 
         Medication medication = mapper.toEntity(dto);
-
         service.save(medication);
 
         URI uri = generateHeaderLocation(medication.getId());
-
         return ResponseEntity.created(uri).build();
     }
 
@@ -40,12 +37,7 @@ public class MedicationController implements GenericController {
             @PathVariable("medicationId") UUID medicationId,
             @RequestBody @Valid MedicationRequestDTO dto) {
 
-        Medication medication = service.getById(medicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dado de tipo de tarefa para o id " + medicationId));
-
-        mapper.updateEntityFromDto(dto, medication);
-
-        service.update(medication);
+        service.update(medicationId, dto);
 
         return ResponseEntity.noContent().build();
     }
@@ -53,11 +45,7 @@ public class MedicationController implements GenericController {
     @DeleteMapping("/{medicationId}")
     public ResponseEntity<Void> deleteMedication(@PathVariable("medicationId") UUID medicationId) {
 
-        Medication medication = service
-                .getById(medicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dado de tipo de tarefa para o id " + medicationId));
-
-        service.delete(medication);
+        service.delete(medicationId);
 
         return ResponseEntity.noContent().build();
     }
@@ -71,12 +59,7 @@ public class MedicationController implements GenericController {
 
     @GetMapping("/{medicationId}")
     public ResponseEntity<MedicationResponseDTO> getByMedicationId(@PathVariable("medicationId") UUID medicationId) {
-
-        return service.getById(medicationId)
-                .map(mapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dado de tipo de tarefa para o id " + medicationId));
+        return ResponseEntity.ok(service.getByIdDTO(medicationId));
     }
-
 
 }
