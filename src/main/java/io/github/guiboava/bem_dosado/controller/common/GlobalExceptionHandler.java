@@ -71,7 +71,7 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleEntityInUseException(EntityInUseException e, HttpServletRequest request) {
         return new ErrorResponse(LocalDateTime.now(),
                 HttpStatus.CONFLICT.value(),
-                "A entidade está em uso e não pode ser removida.",
+                e.getMessage(),
                 List.of(),
                 request.getRequestURI()
         );

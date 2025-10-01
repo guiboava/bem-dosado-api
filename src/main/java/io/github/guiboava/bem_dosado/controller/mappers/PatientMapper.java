@@ -22,6 +22,7 @@ public abstract class PatientMapper {
     @Mapping(target = "changeDate", ignore = true)
     public abstract void updateEntityFromDto(@Valid PatientRequestDTO dto, @MappingTarget Patient patient);
 
+    @Mapping(target = "medicationsDescription", source = "medicationsDescription")
     public abstract PatientResponseDTO toDTO(Patient patient);
 
 }

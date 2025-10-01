@@ -1,7 +1,6 @@
 package io.github.guiboava.bem_dosado.validator;
 
 import io.github.guiboava.bem_dosado.entity.model.Medication;
-import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.exception.DuplicateRegisterException;
 import io.github.guiboava.bem_dosado.exception.EntityInUseException;
 import io.github.guiboava.bem_dosado.repository.MedicationRepository;
@@ -19,7 +18,7 @@ public class MedicationValidator {
         duplicateRegister(medication);
 
     }
-    
+
     private void duplicateRegister(Medication medication) {
         if (medication.getId() == null) {
             if (repository.existsByName(medication.getName())) {
@@ -33,9 +32,11 @@ public class MedicationValidator {
             }
         }
     }
+
     public void validateNotLinkedToTasks(Medication medication) {
         if (!medication.getTasks().isEmpty()) {
-            throw new EntityInUseException("Medicação vinculado a uma tarefa não pode ser deletado.");
+            throw new EntityInUseException(
+                    String.format("Não é possível deletar o medicamento: %s, ele está vinculado a tarefas.", medication.getName()));
         }
     }
 }

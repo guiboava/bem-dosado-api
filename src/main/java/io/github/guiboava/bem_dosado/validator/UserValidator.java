@@ -1,6 +1,5 @@
 package io.github.guiboava.bem_dosado.validator;
 
-import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.entity.model.User;
 import io.github.guiboava.bem_dosado.exception.DuplicateRegisterException;
 import io.github.guiboava.bem_dosado.exception.EntityInUseException;
@@ -46,7 +45,11 @@ public class UserValidator {
 
     public void validateNotLinkedToPatients(User user) {
         if (!user.getPatients().isEmpty()) {
-            throw new EntityInUseException("Usuario vinculado a pacientes não pode ser deletado.");
+            throw new EntityInUseException(
+                    String.format("Não foi possivel deletar o usuario %s, o mesmo tem vinculo com %d paciente%s.",
+                            user.getName(),
+                            (long) user.getPatients().size(),
+                            (long) user.getPatients().size() > 1 ? "s" : ""));
         }
     }
 

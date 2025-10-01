@@ -33,7 +33,9 @@ public class PatientValidator {
 
     public void validateNotLinkedToUsers(Patient patient) {
         if (!patient.getUsers().isEmpty()) {
-            throw new EntityInUseException("Paciente vinculado a mais usuários não pode ser deletado.");
+            throw new EntityInUseException(
+                    String.format("Não é possível deletar o paciente: %s, ele está vinculado a outros usuários.", patient.getName()));
+
         }
     }
 }
