@@ -9,4 +9,11 @@ import java.util.UUID;
 
 @Repository
 public interface PublicEmergencyRepository extends JpaRepository<PublicEmergency, UUID> {
+    boolean existsByServiceName(String serviceName);
+
+    boolean existsByServiceNameAndIdNot(String serviceName, UUID id);
+
+    boolean existsByPhoneNumber(String phoneNumber);
+
+    boolean existsByPhoneNumberAndIdNot(String phoneNumber, UUID id);
 }

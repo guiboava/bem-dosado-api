@@ -3,12 +3,7 @@ package io.github.guiboava.bem_dosado.controller;
 
 import io.github.guiboava.bem_dosado.controller.dto.PatientHealthRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientHealthResponseDTO;
-import io.github.guiboava.bem_dosado.controller.mappers.PatientHealthMapper;
-import io.github.guiboava.bem_dosado.entity.model.Patient;
-import io.github.guiboava.bem_dosado.entity.model.PatientHealth;
-import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.service.PatientHealthService;
-import io.github.guiboava.bem_dosado.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,20 +19,11 @@ import java.util.UUID;
 public class PatientHealthController implements GenericController {
 
     private final PatientHealthService patientHealthService;
-    private final PatientHealthMapper mapper;
-    private final PatientService patientService;
-
-
 
     @PostMapping
     public ResponseEntity<Void> createPatientHealth(@PathVariable("patientId") UUID patientId, @RequestBody @Valid PatientHealthRequestDTO dto) {
-        Patient patient = getPatientOrThrow(patientId);
-        PatientHealth patientHealth = mapper.toEntity(dto);
 
-        patientHealth.setPatient(patient);
-        patientHealthService.save(patientHealth);
-
-        URI uri = generateHeaderLocation(patientHealth.getId());
+        URI uri = generateHeaderLocation(patientHealthService.save(dto, patientId));
 
         return ResponseEntity.created(uri).build();
 
@@ -49,13 +35,7 @@ public class PatientHealthController implements GenericController {
             @PathVariable("healthId") UUID healthId,
             @RequestBody @Valid PatientHealthRequestDTO dto) {
 
-        Patient patient = getPatientOrThrow(patientId);
-
-        PatientHealth patientHealth = patientHealthService.getByPatientIdAndHealthId(patientId, healthId)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dado de saúde para o id " + healthId));
-
-        mapper.updateEntityFromDto(dto, patientHealth);
-        patientHealthService.update(patientHealth);
+        patientHealthService.update(dto, patientId, healthId);
 
         return ResponseEntity.noContent().build();
     }
@@ -65,21 +45,13 @@ public class PatientHealthController implements GenericController {
             @PathVariable("patientId") UUID patientId,
             @PathVariable("healthId") UUID healthId) {
 
-        Patient patient = getPatientOrThrow(patientId);
-
-        PatientHealth patientHealth = patientHealthService
-                .getByPatientIdAndHealthId(patientId, healthId)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dado de saúde para o id " + healthId));
-
-        patientHealthService.delete(patientHealth);
+        patientHealthService.delete(patientId, healthId);
 
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
     public ResponseEntity<List<PatientHealthResponseDTO>> getAllByPatientId(@PathVariable("patientId") UUID patientId) {
-
-        Patient patient = getPatientOrThrow(patientId);
 
         List<PatientHealthResponseDTO> list = patientHealthService.getByPatientId(patientId);
         return ResponseEntity.ok(list);
@@ -88,15 +60,7 @@ public class PatientHealthController implements GenericController {
     @GetMapping("/{healthId}")
     public ResponseEntity<PatientHealthResponseDTO> getByHealthId(@PathVariable("patientId") UUID patientId, @PathVariable("healthId") UUID healthId) {
 
-        return patientHealthService.getByPatientIdAndHealthId(patientId, healthId)
-                .map(mapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dado de saúde para o id " + healthId));
-    }
-
-    private Patient getPatientOrThrow(UUID patientId) {
-        return patientService.getById(patientId)
-                .orElseThrow(() -> new ResourceNotFoundException("Paciente não encontrado"));
+        return ResponseEntity.ok(patientHealthService.getByPatientIdAndHealthId(patientId, healthId));
     }
 
 }

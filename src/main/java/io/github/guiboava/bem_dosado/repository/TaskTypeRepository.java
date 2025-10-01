@@ -8,4 +8,8 @@ import java.util.UUID;
 
 @Repository
 public interface TaskTypeRepository extends JpaRepository<TaskType, UUID> {
+
+    boolean existsByDescribeContainingIgnoreCase(String describe);
+
+    boolean existsByDescribeContainingIgnoreCaseAndIdNot(String describe, UUID id);
 }

@@ -15,4 +15,8 @@ public interface PatientContactRepository extends JpaRepository<PatientContact, 
     Optional<PatientContact> findByIdAndPatient(UUID contactId, Patient patient);
 
     List<PatientContact> findByPatient(Patient patient);
+
+    boolean existsByPatientAndNameAndPhoneNumber(Patient patient,String name, String phoneNumber);
+
+    boolean existsByPatientAndNameAndPhoneNumberAndIdNot(Patient patient,String name, String phoneNumber,UUID id);
 }

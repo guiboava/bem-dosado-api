@@ -16,7 +16,7 @@ public record PatientResponseDTO(UUID id,
                                  String healthPlan,
                                  String cardNumber,
                                  String allergies,
-                                 String medications,
+                                 String medicationsDescription,
                                  String note) {
 }
 

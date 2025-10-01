@@ -2,9 +2,6 @@ package io.github.guiboava.bem_dosado.controller;
 
 import io.github.guiboava.bem_dosado.controller.dto.PublicEmergencyRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PublicEmergencyResponseDTO;
-import io.github.guiboava.bem_dosado.controller.mappers.PublicEmergencyMapper;
-import io.github.guiboava.bem_dosado.entity.model.PublicEmergency;
-import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.service.PublicEmergencyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +18,11 @@ import java.util.UUID;
 public class PublicEmergencyController implements GenericController {
 
     private final PublicEmergencyService service;
-    private final PublicEmergencyMapper mapper;
 
     @PostMapping
     public ResponseEntity<Void> createPublicEmergency(@RequestBody @Valid PublicEmergencyRequestDTO dto) {
 
-        PublicEmergency publicEmergency = mapper.toEntity(dto);
-
-        service.save(publicEmergency);
-
-        URI uri = generateHeaderLocation(publicEmergency.getId());
+        URI uri = generateHeaderLocation(service.save(dto));
 
         return ResponseEntity.created(uri).build();
     }
@@ -40,12 +32,7 @@ public class PublicEmergencyController implements GenericController {
             @PathVariable("publicEmergencyId") UUID publicEmergencyId,
             @RequestBody @Valid PublicEmergencyRequestDTO dto) {
 
-        PublicEmergency publicEmergency = service.getById(publicEmergencyId)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dados de contato de serviço publico para o id " + publicEmergencyId));
-
-        mapper.updateEntityFromDto(dto, publicEmergency);
-
-        service.update(publicEmergency);
+        service.update(dto, publicEmergencyId);
 
         return ResponseEntity.noContent().build();
     }
@@ -53,29 +40,20 @@ public class PublicEmergencyController implements GenericController {
     @DeleteMapping("/{publicEmergencyId}")
     public ResponseEntity<Void> deletePublicEmergency(@PathVariable("publicEmergencyId") UUID publicEmergencyId) {
 
-        PublicEmergency publicEmergency = service
-                .getById(publicEmergencyId)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dados de contato de serviço publico para o id " + publicEmergencyId));
-
-        service.delete(publicEmergency);
+        service.delete(publicEmergencyId);
 
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
     public ResponseEntity<List<PublicEmergencyResponseDTO>> getAllPublicEmergencies() {
-
-        List<PublicEmergencyResponseDTO> list = service.getAll();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{publicEmergencyId}")
     public ResponseEntity<PublicEmergencyResponseDTO> getByPublicEmergencyId(@PathVariable("publicEmergencyId") UUID publicEmergencyId) {
 
-        return service.getById(publicEmergencyId)
-                .map(mapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado dados de contato de serviço publico para o id " + publicEmergencyId));
+        return ResponseEntity.ok(service.getByIdDTO(publicEmergencyId));
     }
 
 }

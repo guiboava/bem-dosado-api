@@ -2,6 +2,7 @@ package io.github.guiboava.bem_dosado.validator;
 
 import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.exception.DuplicateRegisterException;
+import io.github.guiboava.bem_dosado.exception.EntityInUseException;
 import io.github.guiboava.bem_dosado.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -30,4 +31,9 @@ public class PatientValidator {
         }
     }
 
+    public void validateNotLinkedToUsers(Patient patient) {
+        if (!patient.getUsers().isEmpty()) {
+            throw new EntityInUseException("Paciente vinculado a mais usuários não pode ser deletado.");
+        }
+    }
 }

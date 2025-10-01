@@ -28,6 +28,7 @@ public record TaskRequestDTO(
         @NotNull(message = "O paciente é obrigatório")
         UUID taskTypeId,
 
+        @NotNull(message = "A lista de medicamentos é obrigatório")
         Set<UUID> medicationsIds
 
 ) {

@@ -59,7 +59,7 @@ public class Patient {
     @Column(name = "allergies",nullable = false,length = 500)
     private String allergies;
 
-    @Column(name = "medications",nullable = false, length = 500)
+    @Column(name = "medications_description",nullable = false, length = 500)
     private String medicationsDescription;
 
     @Column(name = "note",nullable = false,length = 1000)

@@ -4,7 +4,6 @@ import io.github.guiboava.bem_dosado.entity.model.enums.Dependency;
 import io.github.guiboava.bem_dosado.entity.model.enums.Gender;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -30,7 +29,6 @@ public record PatientRequestDTO(
 
         @NotNull(message = "O nível de dependência é obrigatório")
         Dependency dependency,
-
 
         @Size(max = 50, message = "O plano de saúde deve ter no máximo 50 caracteres")
         String healthPlan,

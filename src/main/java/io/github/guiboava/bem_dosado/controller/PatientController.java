@@ -2,11 +2,8 @@ package io.github.guiboava.bem_dosado.controller;
 
 import io.github.guiboava.bem_dosado.controller.dto.PatientRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientResponseDTO;
-import io.github.guiboava.bem_dosado.controller.mappers.PatientMapper;
-import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.entity.model.enums.Dependency;
 import io.github.guiboava.bem_dosado.entity.model.enums.Gender;
-import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController()
@@ -25,16 +21,30 @@ import java.util.UUID;
 public class PatientController implements GenericController {
 
     private final PatientService service;
-    private final PatientMapper mapper;
 
     @PostMapping
-    public ResponseEntity<Void> createPatient(@RequestBody @Valid PatientRequestDTO patient) {
+    public ResponseEntity<Void> createPatient(@RequestBody @Valid PatientRequestDTO dto) {
 
-        var patientEntity = mapper.toEntity(patient);
-        service.save(patientEntity);
-        URI uri = generateHeaderLocation(patientEntity.getId());
+        URI uri = generateHeaderLocation(service.save(dto));
         return ResponseEntity.created(uri).build();
 
+    }
+
+    @PutMapping("/{patientId}")
+    public ResponseEntity<Void> updatePatient(
+            @PathVariable UUID patientId,
+            @RequestBody @Valid PatientRequestDTO dto) {
+
+        service.update(patientId, dto);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{patientId}")
+    public ResponseEntity<Void> deletePatient(@PathVariable("patientId") UUID patientId) {
+
+        service.delete(patientId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
@@ -50,47 +60,15 @@ public class PatientController implements GenericController {
                                                                   @RequestParam(value = "medications", required = false) String medicationsDescription,
                                                                   @RequestParam(value = "note", required = false) String note
     ) {
-        List<Patient> searchPatients = service.searchByExample(name, cpf, birthDate, gender, cep, dependency, healthPlan, cardNumber, allergies, medicationsDescription, note);
-        List<PatientResponseDTO> list = searchPatients.stream()
-                .map(mapper::toDTO)
-                .toList();
-        return ResponseEntity.ok(list);
+
+        return ResponseEntity.ok(service.searchByExample(name, cpf, birthDate, gender, cep, dependency, healthPlan, cardNumber, allergies, medicationsDescription, note));
 
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PatientResponseDTO> getByPatientId(@PathVariable("id") String id) {
-        UUID patientId = UUID.fromString(id);
-        return service.getById(patientId)
-                .map(mapper::toDTO)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum dado de paciente."));
+    @GetMapping("/{patientId}")
+    public ResponseEntity<PatientResponseDTO> getByPatientId(@PathVariable("patientId") UUID patientId) {
+
+        return ResponseEntity.ok(service.getById(patientId));
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePatient(@PathVariable("id") String id) {
-        UUID patientId = UUID.fromString(id);
-        Optional<Patient> optionalPatient = service.getById(patientId);
-        if (optionalPatient.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        service.delete(optionalPatient.get());
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updatePatient(
-            @PathVariable UUID id,
-            @RequestBody @Valid PatientRequestDTO dto) {
-
-        Patient patient = service.getById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Paciente não encontrado"));
-
-        mapper.updateEntityFromDto(dto, patient);
-        service.update(patient);
-
-        return ResponseEntity.noContent().build();
-    }
-
 
 }

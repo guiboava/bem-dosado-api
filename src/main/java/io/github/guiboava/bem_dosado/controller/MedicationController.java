@@ -2,8 +2,6 @@ package io.github.guiboava.bem_dosado.controller;
 
 import io.github.guiboava.bem_dosado.controller.dto.MedicationRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.MedicationResponseDTO;
-import io.github.guiboava.bem_dosado.controller.mappers.MedicationMapper;
-import io.github.guiboava.bem_dosado.entity.model.Medication;
 import io.github.guiboava.bem_dosado.service.MedicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +18,11 @@ import java.util.UUID;
 public class MedicationController implements GenericController {
 
     private final MedicationService service;
-    private final MedicationMapper mapper;
 
     @PostMapping
     public ResponseEntity<Void> createMedication(@RequestBody @Valid MedicationRequestDTO dto) {
 
-        Medication medication = mapper.toEntity(dto);
-        service.save(medication);
-
-        URI uri = generateHeaderLocation(medication.getId());
+        URI uri = generateHeaderLocation(service.save(dto));
         return ResponseEntity.created(uri).build();
     }
 

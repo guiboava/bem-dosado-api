@@ -1,7 +1,9 @@
 package io.github.guiboava.bem_dosado.validator;
 
+import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.entity.model.User;
 import io.github.guiboava.bem_dosado.exception.DuplicateRegisterException;
+import io.github.guiboava.bem_dosado.exception.EntityInUseException;
 import io.github.guiboava.bem_dosado.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,12 @@ public class UserValidator {
             if (userRepository.existsByCpfAndIdNot(user.getCpf(), user.getId())) {
                 throw new DuplicateRegisterException("Já existe um usuário com este CPF.");
             }
+        }
+    }
+
+    public void validateNotLinkedToPatients(User user) {
+        if (!user.getPatients().isEmpty()) {
+            throw new EntityInUseException("Usuario vinculado a pacientes não pode ser deletado.");
         }
     }
 

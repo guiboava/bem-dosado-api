@@ -3,6 +3,7 @@ package io.github.guiboava.bem_dosado.controller.common;
 import io.github.guiboava.bem_dosado.controller.dto.ErrorField;
 import io.github.guiboava.bem_dosado.controller.dto.ErrorResponse;
 import io.github.guiboava.bem_dosado.exception.DuplicateRegisterException;
+import io.github.guiboava.bem_dosado.exception.EntityInUseException;
 import io.github.guiboava.bem_dosado.exception.OperationNotPermittedException;
 import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,7 +51,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateRegisterException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleDuplicateRegisterException(DuplicateRegisterException e, HttpServletRequest request) {
-        return ErrorResponse.conflict(e.getMessage(), request.getRequestURI());
+        return ErrorResponse.conflict(e.getMessage(),
+                request.getRequestURI());
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -59,20 +61,37 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "O parâmetro '" + e.getName() + "' deve ser um UUID válido.",
-                List.of(), request.getRequestURI()
+                List.of(),
+                request.getRequestURI()
+        );
+    }
+
+    @ExceptionHandler(EntityInUseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleEntityInUseException(EntityInUseException e, HttpServletRequest request) {
+        return new ErrorResponse(LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "A entidade está em uso e não pode ser removida.",
+                List.of(),
+                request.getRequestURI()
         );
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleResourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
-        return new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND.value(), e.getMessage(), List.of(), request.getRequestURI());
+        return new ErrorResponse(LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                e.getMessage(),
+                List.of(),
+                request.getRequestURI());
     }
 
     @ExceptionHandler(OperationNotPermittedException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleOperationNotPermittedException(OperationNotPermittedException e, HttpServletRequest request) {
-        return ErrorResponse.defaultError(e.getMessage(), request.getRequestURI());
+        return ErrorResponse.defaultError(e.getMessage(),
+                request.getRequestURI());
     }
 
 }

@@ -1,7 +1,9 @@
 package io.github.guiboava.bem_dosado.validator;
 
 import io.github.guiboava.bem_dosado.entity.model.Medication;
+import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.exception.DuplicateRegisterException;
+import io.github.guiboava.bem_dosado.exception.EntityInUseException;
 import io.github.guiboava.bem_dosado.repository.MedicationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -29,6 +31,11 @@ public class MedicationValidator {
                 throw new DuplicateRegisterException("Já existe um medicamento com este nome: " + medication.getName()
                 );
             }
+        }
+    }
+    public void validateNotLinkedToTasks(Medication medication) {
+        if (!medication.getTasks().isEmpty()) {
+            throw new EntityInUseException("Medicação vinculado a uma tarefa não pode ser deletado.");
         }
     }
 }

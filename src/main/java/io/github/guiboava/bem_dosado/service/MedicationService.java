@@ -4,7 +4,6 @@ import io.github.guiboava.bem_dosado.controller.dto.MedicationRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.MedicationResponseDTO;
 import io.github.guiboava.bem_dosado.controller.mappers.MedicationMapper;
 import io.github.guiboava.bem_dosado.entity.model.Medication;
-import io.github.guiboava.bem_dosado.exception.OperationNotPermittedException;
 import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.repository.MedicationRepository;
 import io.github.guiboava.bem_dosado.validator.MedicationValidator;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,21 +21,17 @@ public class MedicationService {
     private final MedicationValidator validator;
     private final MedicationMapper mapper;
 
-    public Optional<Medication> getById(UUID medicationId) {
-        return repository.findById(medicationId);
-    }
+    public UUID save(MedicationRequestDTO dto) {
 
-    public Medication save(Medication medication) {
+        Medication medication = mapper.toEntity(dto);
 
         validator.validate(medication);
-        return repository.save(medication);
-
+        return repository.save(medication).getId();
     }
 
     public void update(UUID medicationId, MedicationRequestDTO dto) {
 
-        Medication medication = getById(medicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado medicamento para o id " + medicationId));
+        Medication medication = getById(medicationId);
 
         mapper.updateEntityFromDto(dto, medication);
 
@@ -48,8 +42,9 @@ public class MedicationService {
 
     public void delete(UUID medicationId) {
 
-        Medication medication = getById(medicationId)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado medicamento para o id " + medicationId));
+        Medication medication = getById(medicationId);
+
+        validator.validateNotLinkedToTasks(medication);
 
         repository.delete(medication);
     }
@@ -62,10 +57,16 @@ public class MedicationService {
                 .map(mapper::toDTO)
                 .toList();
     }
-    public MedicationResponseDTO getByIdDTO(UUID id) {
-        Medication medication = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Medicamento não encontrado: " + id));
+
+    public MedicationResponseDTO getByIdDTO(UUID medicationId) {
+        Medication medication = getById(medicationId);
         return mapper.toDTO(medication);
+    }
+
+    public Medication getById(UUID medicationId) {
+
+        return repository.findById(medicationId)
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado medicamento para o id " + medicationId));
     }
 
 }
