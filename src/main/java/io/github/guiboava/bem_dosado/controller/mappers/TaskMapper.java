@@ -25,8 +25,10 @@ public abstract class TaskMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "describe", source = "dto.describe")
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
+    @Mapping(target = "createdByUser", ignore = true)
+    @Mapping(target = "updatedByUser", ignore = true)
     @Mapping(target = "patient", source = "patient")
     @Mapping(target = "taskType", source = "taskType")
     public abstract void updateEntityFromDto(@Valid TaskRequestDTO dto, Patient patient, TaskType taskType, @MappingTarget Task task);

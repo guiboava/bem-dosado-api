@@ -6,6 +6,7 @@ import io.github.guiboava.bem_dosado.controller.mappers.MedicationMapper;
 import io.github.guiboava.bem_dosado.entity.model.Medication;
 import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.repository.MedicationRepository;
+import io.github.guiboava.bem_dosado.security.SecurityService;
 import io.github.guiboava.bem_dosado.validator.MedicationValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,8 @@ public class MedicationService {
     public UUID save(MedicationRequestDTO dto) {
 
         Medication medication = mapper.toEntity(dto);
-
         validator.validate(medication);
+
         return repository.save(medication).getId();
     }
 
@@ -34,8 +35,8 @@ public class MedicationService {
         Medication medication = getById(medicationId);
 
         mapper.updateEntityFromDto(dto, medication);
-
         validator.validate(medication);
+
         repository.save(medication);
 
     }

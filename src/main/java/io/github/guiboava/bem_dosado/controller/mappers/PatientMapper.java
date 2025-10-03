@@ -18,8 +18,8 @@ public abstract class PatientMapper {
 
     @Mapping(target = "cep", qualifiedByName = "onlyDigits")
     @Mapping(target = "cpf", qualifiedByName = "onlyDigits")
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
     public abstract void updateEntityFromDto(@Valid PatientRequestDTO dto, @MappingTarget Patient patient);
 
     @Mapping(target = "medicationsDescription", source = "medicationsDescription")

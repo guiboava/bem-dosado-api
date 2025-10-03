@@ -16,8 +16,8 @@ public abstract class PublicEmergencyMapper {
     public abstract PublicEmergency toEntity(PublicEmergencyRequestDTO dto);
 
     @Mapping(target = "phoneNumber", qualifiedByName = "onlyDigits")
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
     public abstract void updateEntityFromDto(@Valid  PublicEmergencyRequestDTO dto, @MappingTarget PublicEmergency publicEmergency);
 
     public abstract PublicEmergencyResponseDTO toDTO(PublicEmergency publicEmergency);

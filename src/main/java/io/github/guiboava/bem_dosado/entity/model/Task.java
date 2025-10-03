@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -36,13 +38,23 @@ public class Task {
     @Column(name = "priority", length = 1, nullable = false)
     Integer priority;
 
+    @CreatedBy
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_user_id")
+    private User createdByUser;
+
+    @LastModifiedBy
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updated_user_id")
+    private User updatedByUser;
+
     @CreatedDate
-    @Column(name = "create_date", nullable = false)
-    private LocalDateTime createDate;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(name = "change_date", nullable = false)
-    private LocalDateTime changeDate;
+    @Column(name = "updated_date", nullable = false)
+    private LocalDateTime updated_date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_task_type")
@@ -60,11 +72,7 @@ public class Task {
     private User user;
 
     @ManyToMany
-    @JoinTable(
-            name = "tasks_medications",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "medications_id")
-    )
+    @JoinTable(name = "tasks_medications", joinColumns = @JoinColumn(name = "task_id"), inverseJoinColumns = @JoinColumn(name = "medications_id"))
     private Set<Medication> medications = new HashSet<>();
 
 }

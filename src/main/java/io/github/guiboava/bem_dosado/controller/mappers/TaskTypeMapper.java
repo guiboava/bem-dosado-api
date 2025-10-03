@@ -15,8 +15,8 @@ public abstract class TaskTypeMapper {
 
     public abstract TaskType toEntity(TaskTypeRequestDTO dto);
 
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
     public abstract void updateEntityFromDto(@Valid TaskTypeRequestDTO dto, @MappingTarget TaskType taskType);
 
     public abstract TaskTypeResponseDTO toDTO(TaskType taskType);

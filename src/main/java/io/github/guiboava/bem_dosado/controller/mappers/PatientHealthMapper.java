@@ -13,8 +13,8 @@ public abstract class PatientHealthMapper {
 
     public abstract PatientHealth toEntity(PatientHealthRequestDTO dto);
 
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
     public abstract void updateEntityFromDto(@Valid PatientHealthRequestDTO dto, @MappingTarget PatientHealth patientHealth);
 
     public abstract PatientHealthResponseDTO toDTO(PatientHealth patientHealth);

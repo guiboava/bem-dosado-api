@@ -64,12 +64,12 @@ public class User {
     private LocalDate birthDate;
 
     @CreatedDate
-    @Column(name = "create_date", nullable = false)
-    private LocalDateTime createDate;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(name = "change_date",nullable = false)
-    private LocalDateTime changeDate;
+    @Column(name = "updated_date", nullable = false)
+    private LocalDateTime updated_date;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "users_patients", joinColumns = @JoinColumn(name = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_patient"))

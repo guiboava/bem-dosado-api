@@ -7,7 +7,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -21,7 +23,7 @@ import java.util.UUID;
 @Table(name = "patients")
 @Data
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = {"users", "tasks", "patientHealths","contacts"})
+@ToString(exclude = {"users", "tasks", "patientHealths", "contacts"})
 @EntityListeners(AuditingEntityListener.class)
 public class Patient {
 
@@ -50,28 +52,38 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     private Dependency dependency;
 
-    @Column(name = "health_plan",nullable = false,length = 50)
+    @Column(name = "health_plan", nullable = false, length = 50)
     private String healthPlan;
 
-    @Column(name = "card_number",nullable = false,length = 20)
+    @Column(name = "card_number", nullable = false, length = 20)
     private String cardNumber;
 
-    @Column(name = "allergies",nullable = false,length = 500)
+    @Column(name = "allergies", nullable = false, length = 500)
     private String allergies;
 
-    @Column(name = "medications_description",nullable = false, length = 500)
+    @Column(name = "medications_description", nullable = false, length = 500)
     private String medicationsDescription;
 
-    @Column(name = "note",nullable = false,length = 1000)
+    @Column(name = "note", nullable = false, length = 1000)
     private String note;
 
+    @CreatedBy
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_user_id")
+    private User createdByUser;
+
+    @LastModifiedBy
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updated_user_id")
+    private User updatedByUser;
+
     @CreatedDate
-    @Column(name = "create_date", nullable = false)
-    private LocalDateTime createDate;
+    @Column(name = "created_date", nullable = false)
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(name = "change_date", nullable = false)
-    private LocalDateTime changeDate;
+    @Column(name = "updated_date", nullable = false)
+    private LocalDateTime updated_date;
 
     @ManyToMany(mappedBy = "patients", fetch = FetchType.LAZY)
     @JsonIgnore
@@ -85,7 +97,7 @@ public class Patient {
     @JsonIgnore
     private List<PatientHealth> patientHealths;
 
-    @OneToMany(mappedBy = "patient",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
     @JsonIgnore
     private List<PatientContact> contacts;
 

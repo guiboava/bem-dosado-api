@@ -7,12 +7,13 @@ import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.entity.model.PatientContact;
 import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import io.github.guiboava.bem_dosado.repository.PatientContactRepository;
+import io.github.guiboava.bem_dosado.security.SecurityService;
 import io.github.guiboava.bem_dosado.validator.PatientContactValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -24,14 +25,14 @@ public class PatientContactService {
     private final PatientContactValidator validator;
     private final PatientService patientService;
 
-
     public UUID save(PatientContactRequestDTO dto, UUID patientId) {
 
         Patient patient = getPatientOrThrow(patientId);
         PatientContact patientContact = mapper.toEntity(dto);
         patientContact.setPatient(patient);
-
         validator.validate(patientContact);
+
+
         return repository.save(patientContact).getId();
     }
 
@@ -44,6 +45,7 @@ public class PatientContactService {
 
         mapper.updateEntityFromDto(dto, patientContact);
         validator.validate(patientContact);
+
         repository.save(patientContact);
     }
 
@@ -80,5 +82,5 @@ public class PatientContactService {
     private Patient getPatientOrThrow(UUID patientId) {
         return patientService.getEntityById(patientId);
     }
-    
+
 }

@@ -16,9 +16,19 @@ public class SecurityService {
 
     public User getLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String login = userDetails.getUsername();
+        Object principal = authentication.getPrincipal();
+
+        String login;
+        if (principal instanceof UserDetails userDetails) {
+            login = userDetails.getUsername();
+        } else if (principal instanceof String username) {
+            login = username;
+        } else {
+            throw new IllegalStateException("Tipo de principal inesperado: " + principal.getClass());
+        }
+
         return userService.getByLogin(login);
     }
+
 
 }

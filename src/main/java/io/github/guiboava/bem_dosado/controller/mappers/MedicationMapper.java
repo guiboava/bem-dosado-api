@@ -13,8 +13,8 @@ public abstract class MedicationMapper {
 
     public abstract Medication toEntity(MedicationRequestDTO dto);
 
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
     public abstract void updateEntityFromDto(@Valid MedicationRequestDTO dto, @MappingTarget Medication medication);
 
     public abstract MedicationResponseDTO toDTO(Medication medication);

@@ -20,8 +20,8 @@ public abstract class UserMapper {
     @Mapping(target = "phoneNumber", qualifiedByName = "onlyDigits")
     @Mapping(target = "cep", qualifiedByName = "onlyDigits")
     @Mapping(target = "cpf", qualifiedByName = "onlyDigits")
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
     public abstract void updateEntityFromDto(@Valid UserRequestDTO dto,@MappingTarget User user);
 
     public abstract UserResponseDTO toDTO(User user);

@@ -13,13 +13,13 @@ import org.mapstruct.MappingTarget;
 public abstract class PatientContactMapper {
 
     @Mapping(target = "phoneNumber", qualifiedByName = "onlyDigits")
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
     public abstract PatientContact toEntity(PatientContactRequestDTO dto);
 
     @Mapping(target = "phoneNumber", qualifiedByName = "onlyDigits")
-    @Mapping(target = "createDate", ignore = true)
-    @Mapping(target = "changeDate", ignore = true)
+    @Mapping(target = "createdDate", ignore = true)
+    @Mapping(target = "updated_date", ignore = true)
     public abstract void updateEntityFromDto(@Valid  PatientContactRequestDTO dto, @MappingTarget PatientContact patientContact);
 
     public abstract PatientContactResponseDTO toDTO(PatientContact patientContact);
