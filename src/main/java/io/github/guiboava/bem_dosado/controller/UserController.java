@@ -4,10 +4,12 @@ import io.github.guiboava.bem_dosado.controller.dto.UserRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.UserResponseDTO;
 import io.github.guiboava.bem_dosado.entity.model.enums.Gender;
 import io.github.guiboava.bem_dosado.entity.model.enums.UserType;
+import io.github.guiboava.bem_dosado.security.SecurityService;
 import io.github.guiboava.bem_dosado.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -31,6 +33,7 @@ public class UserController implements GenericController {
     }
 
     @PutMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> updateUser(
             @PathVariable UUID userId,
             @RequestBody @Valid UserRequestDTO dto) {
@@ -40,6 +43,7 @@ public class UserController implements GenericController {
     }
 
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") UUID userId) {
 
         service.delete(userId);
@@ -47,8 +51,9 @@ public class UserController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<List<UserResponseDTO>> searchUser(@RequestParam(value = "name", required = false) String name,
-                                                            @RequestParam(value = "userName", required = false) String userName,
+                                                            @RequestParam(value = "login", required = false) String login,
                                                             @RequestParam(value = "email", required = false) String email,
                                                             @RequestParam(value = "cpf", required = false) String cpf,
                                                             @RequestParam(value = "userType", required = false) UserType userType,
@@ -57,10 +62,11 @@ public class UserController implements GenericController {
                                                             @RequestParam(value = "birthDate", required = false) LocalDate birthDate
     ) {
 
-        return ResponseEntity.ok(service.searchByExample(name, userName, email, cpf, userType, gender, phoneNumber, birthDate));
+        return ResponseEntity.ok(service.searchByExample(name, login, email, cpf, userType, gender, phoneNumber, birthDate));
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<UserResponseDTO> getByUserId(@PathVariable("userId") UUID userId) {
 
         return ResponseEntity.ok(service.getById(userId));

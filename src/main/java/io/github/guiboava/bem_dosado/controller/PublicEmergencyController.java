@@ -6,6 +6,7 @@ import io.github.guiboava.bem_dosado.service.PublicEmergencyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -20,6 +21,7 @@ public class PublicEmergencyController implements GenericController {
     private final PublicEmergencyService service;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> createPublicEmergency(@RequestBody @Valid PublicEmergencyRequestDTO dto) {
 
         URI uri = generateHeaderLocation(service.save(dto));
@@ -28,6 +30,7 @@ public class PublicEmergencyController implements GenericController {
     }
 
     @PutMapping("/{publicEmergencyId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> updatePublicEmergency(
             @PathVariable("publicEmergencyId") UUID publicEmergencyId,
             @RequestBody @Valid PublicEmergencyRequestDTO dto) {
@@ -38,6 +41,7 @@ public class PublicEmergencyController implements GenericController {
     }
 
     @DeleteMapping("/{publicEmergencyId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletePublicEmergency(@PathVariable("publicEmergencyId") UUID publicEmergencyId) {
 
         service.delete(publicEmergencyId);
@@ -46,11 +50,13 @@ public class PublicEmergencyController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<List<PublicEmergencyResponseDTO>> getAllPublicEmergencies() {
         return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/{publicEmergencyId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<PublicEmergencyResponseDTO> getByPublicEmergencyId(@PathVariable("publicEmergencyId") UUID publicEmergencyId) {
 
         return ResponseEntity.ok(service.getByIdDTO(publicEmergencyId));

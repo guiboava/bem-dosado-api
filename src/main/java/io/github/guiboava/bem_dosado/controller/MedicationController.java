@@ -6,6 +6,7 @@ import io.github.guiboava.bem_dosado.service.MedicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -20,6 +21,7 @@ public class MedicationController implements GenericController {
     private final MedicationService service;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> createMedication(@RequestBody @Valid MedicationRequestDTO dto) {
 
         URI uri = generateHeaderLocation(service.save(dto));
@@ -27,6 +29,7 @@ public class MedicationController implements GenericController {
     }
 
     @PutMapping("/{medicationId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> updateMedication(
             @PathVariable("medicationId") UUID medicationId,
             @RequestBody @Valid MedicationRequestDTO dto) {
@@ -37,6 +40,7 @@ public class MedicationController implements GenericController {
     }
 
     @DeleteMapping("/{medicationId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> deleteMedication(@PathVariable("medicationId") UUID medicationId) {
 
         service.delete(medicationId);
@@ -45,6 +49,7 @@ public class MedicationController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<List<MedicationResponseDTO>> getAllMedication() {
 
         List<MedicationResponseDTO> list = service.getAll();
@@ -52,6 +57,7 @@ public class MedicationController implements GenericController {
     }
 
     @GetMapping("/{medicationId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<MedicationResponseDTO> getByMedicationId(@PathVariable("medicationId") UUID medicationId) {
         return ResponseEntity.ok(service.getByIdDTO(medicationId));
     }

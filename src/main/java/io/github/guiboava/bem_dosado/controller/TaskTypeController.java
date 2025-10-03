@@ -6,6 +6,7 @@ import io.github.guiboava.bem_dosado.service.TaskTypeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -21,6 +22,7 @@ public class TaskTypeController implements GenericController {
     private final TaskTypeService service;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> createTaskType(@RequestBody @Valid TaskTypeRequestDTO dto) {
 
         URI uri = generateHeaderLocation(service.save(dto));
@@ -29,6 +31,7 @@ public class TaskTypeController implements GenericController {
     }
 
     @PutMapping("/{taskTypeId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> updateTaskType(
             @PathVariable("taskTypeId") UUID taskTypeId,
             @RequestBody @Valid TaskTypeRequestDTO dto) {
@@ -39,6 +42,7 @@ public class TaskTypeController implements GenericController {
     }
 
     @DeleteMapping("/{taskTypeId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> deleteTaskType(@PathVariable("taskTypeId") UUID taskTypeId) {
 
         service.delete(taskTypeId);
@@ -47,6 +51,7 @@ public class TaskTypeController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<List<TaskTypeResponseDTO>> getAllTaskTypes() {
 
         return ResponseEntity.ok(service.getAll());
@@ -54,6 +59,7 @@ public class TaskTypeController implements GenericController {
     }
 
     @GetMapping("/{taskTypeId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<TaskTypeResponseDTO> getByTaskTypeId(@PathVariable("taskTypeId") UUID taskTypeId) {
 
         return ResponseEntity.ok(service.getById(taskTypeId));

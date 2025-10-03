@@ -8,6 +8,7 @@ import io.github.guiboava.bem_dosado.service.PatientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -23,6 +24,7 @@ public class PatientController implements GenericController {
     private final PatientService service;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> createPatient(@RequestBody @Valid PatientRequestDTO dto) {
 
         URI uri = generateHeaderLocation(service.save(dto));
@@ -31,9 +33,8 @@ public class PatientController implements GenericController {
     }
 
     @PutMapping("/{patientId}")
-    public ResponseEntity<Void> updatePatient(
-            @PathVariable UUID patientId,
-            @RequestBody @Valid PatientRequestDTO dto) {
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
+    public ResponseEntity<Void> updatePatient(@PathVariable UUID patientId, @RequestBody @Valid PatientRequestDTO dto) {
 
         service.update(patientId, dto);
 
@@ -41,6 +42,7 @@ public class PatientController implements GenericController {
     }
 
     @DeleteMapping("/{patientId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> deletePatient(@PathVariable("patientId") UUID patientId) {
 
         service.delete(patientId);
@@ -48,27 +50,19 @@ public class PatientController implements GenericController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientResponseDTO>> searchPatient(@RequestParam(value = "name", required = false) String name,
-                                                                  @RequestParam(value = "cpf", required = false) String cpf,
-                                                                  @RequestParam(value = "birthDate", required = false) LocalDate birthDate,
-                                                                  @RequestParam(value = "gender", required = false) Gender gender,
-                                                                  @RequestParam(value = "cep", required = false) String cep,
-                                                                  @RequestParam(value = "dependency", required = false) Dependency dependency,
-                                                                  @RequestParam(value = "healthPlan", required = false) String healthPlan,
-                                                                  @RequestParam(value = "cardNumber", required = false) String cardNumber,
-                                                                  @RequestParam(value = "allergies", required = false) String allergies,
-                                                                  @RequestParam(value = "medications", required = false) String medicationsDescription,
-                                                                  @RequestParam(value = "note", required = false) String note
-    ) {
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    public ResponseEntity<List<PatientResponseDTO>> searchPatient(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "cpf", required = false) String cpf, @RequestParam(value = "birthDate", required = false) LocalDate birthDate, @RequestParam(value = "gender", required = false) Gender gender, @RequestParam(value = "cep", required = false) String cep, @RequestParam(value = "dependency", required = false) Dependency dependency, @RequestParam(value = "healthPlan", required = false) String healthPlan, @RequestParam(value = "cardNumber", required = false) String cardNumber, @RequestParam(value = "allergies", required = false) String allergies, @RequestParam(value = "medications", required = false) String medicationsDescription, @RequestParam(value = "note", required = false) String note) {
 
         return ResponseEntity.ok(service.searchByExample(name, cpf, birthDate, gender, cep, dependency, healthPlan, cardNumber, allergies, medicationsDescription, note));
 
     }
 
     @GetMapping("/{patientId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<PatientResponseDTO> getByPatientId(@PathVariable("patientId") UUID patientId) {
 
         return ResponseEntity.ok(service.getById(patientId));
+
     }
 
 }

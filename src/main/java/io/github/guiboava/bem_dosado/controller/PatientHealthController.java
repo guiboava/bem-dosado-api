@@ -7,6 +7,7 @@ import io.github.guiboava.bem_dosado.service.PatientHealthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -21,6 +22,7 @@ public class PatientHealthController implements GenericController {
     private final PatientHealthService patientHealthService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> createPatientHealth(@PathVariable("patientId") UUID patientId, @RequestBody @Valid PatientHealthRequestDTO dto) {
 
         URI uri = generateHeaderLocation(patientHealthService.save(dto, patientId));
@@ -30,6 +32,7 @@ public class PatientHealthController implements GenericController {
     }
 
     @PutMapping("/{healthId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> updatePatientHealth(
             @PathVariable("patientId") UUID patientId,
             @PathVariable("healthId") UUID healthId,
@@ -41,6 +44,7 @@ public class PatientHealthController implements GenericController {
     }
 
     @DeleteMapping("/{healthId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> deletePatientHealth(
             @PathVariable("patientId") UUID patientId,
             @PathVariable("healthId") UUID healthId) {
@@ -51,6 +55,7 @@ public class PatientHealthController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<List<PatientHealthResponseDTO>> getAllByPatientId(@PathVariable("patientId") UUID patientId) {
 
         List<PatientHealthResponseDTO> list = patientHealthService.getByPatientId(patientId);
@@ -58,6 +63,7 @@ public class PatientHealthController implements GenericController {
     }
 
     @GetMapping("/{healthId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<PatientHealthResponseDTO> getByHealthId(@PathVariable("patientId") UUID patientId, @PathVariable("healthId") UUID healthId) {
 
         return ResponseEntity.ok(patientHealthService.getByPatientIdAndHealthId(patientId, healthId));

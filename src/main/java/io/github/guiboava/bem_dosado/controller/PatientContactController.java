@@ -6,6 +6,7 @@ import io.github.guiboava.bem_dosado.service.PatientContactService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -20,6 +21,7 @@ public class PatientContactController implements GenericController {
     private final PatientContactService patientContactService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> createPatientContact(@PathVariable("patientId") UUID patientId, @RequestBody @Valid PatientContactRequestDTO dto) {
 
         URI uri = generateHeaderLocation(patientContactService.save(dto, patientId));
@@ -28,6 +30,7 @@ public class PatientContactController implements GenericController {
     }
 
     @PutMapping("/{contactId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> updatePatientContact(
             @PathVariable("patientId") UUID patientId,
             @PathVariable("contactId") UUID patientContactId,
@@ -39,6 +42,7 @@ public class PatientContactController implements GenericController {
     }
 
     @DeleteMapping("/{contactId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
     public ResponseEntity<Void> deletePatientContact(
             @PathVariable("patientId") UUID patientId,
             @PathVariable("contactId") UUID patientContactId) {
@@ -49,6 +53,7 @@ public class PatientContactController implements GenericController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<List<PatientContactResponseDTO>> getAllByPatientId(@PathVariable("patientId") UUID patientId) {
 
         List<PatientContactResponseDTO> list = patientContactService.getByPatientId(patientId);
@@ -56,6 +61,7 @@ public class PatientContactController implements GenericController {
     }
 
     @GetMapping("/{contactId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<PatientContactResponseDTO> getByContactId(@PathVariable("patientId") UUID patientId, @PathVariable("contactId") UUID patientContactId) {
 
         return ResponseEntity.ok(patientContactService.getByPatientIdAndContactId(patientId, patientContactId));

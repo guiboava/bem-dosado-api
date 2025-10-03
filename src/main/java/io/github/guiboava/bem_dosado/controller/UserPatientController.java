@@ -1,9 +1,9 @@
 package io.github.guiboava.bem_dosado.controller;
 
 import io.github.guiboava.bem_dosado.controller.dto.PatientResponseDTO;
-import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +20,7 @@ public class UserPatientController {
     }
 
     @PostMapping("/{patientId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> addPatient(
             @PathVariable UUID userId,
             @PathVariable UUID patientId) {
@@ -28,6 +29,7 @@ public class UserPatientController {
     }
 
     @DeleteMapping("/{patientId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> removePatient(
             @PathVariable UUID userId,
             @PathVariable UUID patientId) {
@@ -36,6 +38,7 @@ public class UserPatientController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<List<PatientResponseDTO>> listPatients(@PathVariable UUID userId) {
         return ResponseEntity.ok(userService.getUserPatients(userId));
     }

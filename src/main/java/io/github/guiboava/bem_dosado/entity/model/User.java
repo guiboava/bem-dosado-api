@@ -33,8 +33,8 @@ public class User {
     @Column(name = "name", length = 500, nullable = false)
     private String name;
 
-    @Column(name = "user_name", nullable = false, length = 500, unique = true)
-    private String userName;
+    @Column(name = "login", nullable = false, length = 500, unique = true)
+    private String login;
 
     @Column(name = "email", nullable = false, length = 500, unique = true)
     private String email;

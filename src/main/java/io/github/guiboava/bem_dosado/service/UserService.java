@@ -16,6 +16,7 @@ import io.github.guiboava.bem_dosado.validator.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,11 +35,13 @@ public class UserService {
     private final UserPatientValidator userPatientValidator;
     private final UserMapper userMapper;
     private final PatientMapper patientMapper;
+    private final PasswordEncoder encoder;
 
     public UUID save(UserRequestDTO dto) {
 
         User user = userMapper.toEntity(dto);
         userValidator.validate(user);
+        user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user).getId();
     }
 
@@ -48,6 +51,11 @@ public class UserService {
 
         userMapper.updateEntityFromDto(dto, user);
         userValidator.validate(user);
+
+        if (dto.password() != null && !dto.password().isBlank()) {
+            user.setPassword(encoder.encode(dto.password()));
+        }
+
         userRepository.save(user);
     }
 
@@ -60,29 +68,19 @@ public class UserService {
 
     public UserResponseDTO getById(UUID userId) {
 
-        return userRepository.findById(userId)
-                .map(userMapper::toDTO)
-                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum dado de usuário para o paciente."));
+        return userRepository.findById(userId).map(userMapper::toDTO).orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum dado de usuário para o paciente."));
     }
 
     public User getEntityById(UUID userId) {
-        return userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado para o id " + userId));
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado para o id " + userId));
 
     }
 
-    public List<UserResponseDTO> searchByExample(String name,
-                                                 String userName,
-                                                 String email,
-                                                 String cpf,
-                                                 UserType userType,
-                                                 Gender gender,
-                                                 String phoneNumber,
-                                                 LocalDate birthDate) {
+    public List<UserResponseDTO> searchByExample(String name, String login, String email, String cpf, UserType userType, Gender gender, String phoneNumber, LocalDate birthDate) {
 
         var user = new User();
         user.setName(name);
-        user.setUserName(userName);
+        user.setLogin(login);
         user.setEmail(email);
         user.setCpf(cpf);
         user.setUserType(userType);
@@ -90,15 +88,9 @@ public class UserService {
         user.setPhoneNumber(phoneNumber);
         user.setBirthDate(birthDate);
 
-        ExampleMatcher matcher = ExampleMatcher
-                .matching()
-                .withIgnoreNullValues()
-                .withIgnoreCase()
-                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues().withIgnoreCase().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Example<User> userExample = Example.of(user, matcher);
-        return userRepository.findAll(userExample).stream()
-                .map(userMapper::toDTO)
-                .toList();
+        return userRepository.findAll(userExample).stream().map(userMapper::toDTO).toList();
 
     }
 
@@ -124,10 +116,10 @@ public class UserService {
 
     public List<PatientResponseDTO> getUserPatients(UUID userId) {
         User user = getEntityById(userId);
-        return new ArrayList<>(user.getPatients())
-                .stream()
-                .map(patientMapper::toDTO)
-                .toList();
+        return new ArrayList<>(user.getPatients()).stream().map(patientMapper::toDTO).toList();
     }
 
+    public User getByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
 }

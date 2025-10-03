@@ -8,6 +8,7 @@ import io.github.guiboava.bem_dosado.exception.OperationNotPermittedException;
 import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -61,6 +62,17 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "O parâmetro '" + e.getName() + "' deve ser um UUID válido.",
+                List.of(),
+                request.getRequestURI()
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
+        return new ErrorResponse(LocalDateTime.now(),
+                HttpStatus.FORBIDDEN.value(),
+                "Acesso Negado.",
                 List.of(),
                 request.getRequestURI()
         );
