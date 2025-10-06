@@ -1,0 +1,14 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "bem_dosado_data",
+      "Group": "Docker",
+      "Host": "db",
+      "Port": 5432,
+      "MaintenanceDB": "bem_dosado",
+      "Username": "postgres",
+      "Password": "postgres",
+      "SSLMode": "prefer"
+    }
+  }
+}

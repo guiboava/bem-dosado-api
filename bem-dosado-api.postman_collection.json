@@ -1,0 +1,1422 @@
+{
+	"info": {
+		"_postman_id": "cf0e82e7-d0f6-47ce-86ee-b30e048fdba9",
+		"name": "bem-dosado-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35281646"
+	},
+	"item": [
+		{
+			"name": "Users End-Point",
+			"item": [
+				{
+					"name": "Post Users",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Guilherme da Silva Boava\",\r\n    \"login\": \"familiar\",\r\n    \"email\": \"gu7boavkça@6hotmdail.com\",\r\n    \"cpf\": \"90936370963\",\r\n    \"userType\": \"F\",\r\n    \"password\": \"123456\",\r\n    \"confirmPassword\":\"123456\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"(48) 9 99239935\",\r\n    \"cep\": \"88816360\",\r\n    \"birthDate\": \"1998-06-22\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Users",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Guilherme da Silva Boava\",\r\n    \"userName\": \"g3luidb4foava12\",\r\n    \"email\": \"gu7iboavkça@6hotmdail.com\",\r\n    \"cpf\": \"11453873902\",\r\n    \"userType\": \"F\",\r\n    \"password\": \"123456\",\r\n    \"confirmPassword\":\"123456\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"(48) 9 99239935\",\r\n    \"cep\": \"88816360\",\r\n    \"birthDate\": \"1998-06-22\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "e8c0de40-8870-4ca7-a6be-77bf1bffc225346"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Users",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Guilherme da Silva Boava\",\r\n    \"userName\": \"guiboava\",\r\n    \"email\": \"guiboava@hotmail.com\",\r\n    \"cpf\": \"123-098-345-43\",\r\n    \"userType\": \"F\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"(48) 9 99239935\",\r\n    \"cep\": \"8888-888\",\r\n    \"birthDate\": \"1998-06-22\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3bbfee9c-c1e9-4666-b7d1-7c1a9d0d3446"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "familiar",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Users",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Guilherme da Silva Boava\",\r\n    \"userName\": \"guiboava\",\r\n    \"email\": \"guiboava@hotmail.com\",\r\n    \"cpf\": \"123-098-345-43\",\r\n    \"userType\": \"F\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"(48) 9 99239935\",\r\n    \"cep\": \"8888-888\",\r\n    \"birthDate\": \"1998-06-22\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cc64a26d-e6eb-4d43-9d7b-962dcce632d4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patients End-Point",
+			"item": [
+				{
+					"name": "Post Patients",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Claudenir da silva moraes\",\r\n  \"cpf\": \"11453873902\",\r\n  \"birthDate\": \"1950-07-15\",\r\n  \"gender\": \"M\",\r\n  \"cep\": \"88820000\",\r\n  \"dependency\": \"G1\",\r\n  \"healthPlan\": \"Unimed\",\r\n  \"cardNumber\": \"1234567890123456789\",\r\n  \"allergies\": \"Alergia a penicilina\",\r\n  \"medicationsDescription\": \"Losartana 50mg, Metformina 850mg\",\r\n  \"note\": \"Paciente apresenta mobilidade reduzida, necessita de auxílio para atividades diárias.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Patients",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"teste teste teste \",\r\n  \"cpf\": \"123.456.789-09\",\r\n  \"birthDate\": \"1950-07-15\",\r\n  \"gender\": \"F\",\r\n  \"cep\": \"88820-000\",\r\n  \"dependency\": \"G1\",\r\n  \"healthPlan\": \"Unimed\",\r\n  \"cardNumber\": \"1234567890123456789\",\r\n  \"allergies\": \"Alergia a penicilina\",\r\n  \"medicationsDescription\": \"Losartana 50mg, Metformina 850mg\",\r\n  \"note\": \"Paciente apresenta mobilidade reduzida, necessita de auxílio para atividades diárias.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/patients/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "a6caf156-cb73-4a37-8090-185706d37f68"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Patients",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3a3ba2f2-c9a5-4269-974d-fc03f5cf4e05"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search Patients",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Patients",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/patients/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "3a3ba2f2-c9a5-4269-974d-fc03f5cf4e05"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PatientHealth End-Point",
+			"item": [
+				{
+					"name": "Post Saúde de paciente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"heartRate\": 45,\r\n  \"oximetry\": 63,\r\n  \"bloodPressure\": 30,\r\n  \"temperature\": 36.5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/healths",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"healths"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ed60b2d4-b8bc-445e-b987-a44f6ab65839"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Saúde de paciente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"bloodPressure\": 250,\r\n  \"heartRate\": 100,\r\n  \"oximetry\": 100,\r\n  \"bloodGlucose\": 120,\r\n  \"temperature\": 45.0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/healths/:id-health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"healths",
+								":id-health"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ed60b2d4-b8bc-445e-b987-a44f6ab65839"
+								},
+								{
+									"key": "id-health",
+									"value": "ffadc4b0-c588-4a1e-80a2-bca69efbd535"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Saúde de paciente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/healths/:id-health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"healths",
+								":id-health"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ed60b2d4-b8bc-445e-b987-a44f6ab65839"
+								},
+								{
+									"key": "id-health",
+									"value": "ffadc4b0-c588-4a1e-80a2-bca69efbd535"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Saúde de paciente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/healths/:id-health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"healths",
+								":id-health"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ed60b2d4-b8bc-445e-b987-a44f6ab65839"
+								},
+								{
+									"key": "id-health",
+									"value": "ffadc4b0-c588-4a1e-80a2-bca69efbd535"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll Saúde de paciente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/healths",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"healths"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ed60b2d4-b8bc-445e-b987-a44f6ab65839"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PatientContact End-Point",
+			"item": [
+				{
+					"name": "Post PatientContact de Paciente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"João da Silva\",\r\n  \"phoneNumber\": \"+5511999998888\",\r\n  \"affiliation\": \"Clínica São Lucas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/contacts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"contacts"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "ed60b2d4-b8bc-445e-b987-a44f6ab65839"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update PatientContact de Paciente",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Teste da Silva\",\r\n  \"phoneNumber\": \"+5511999998888\",\r\n  \"affiliation\": \"Clínica São Lucas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/contacts/:id-contacts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"contacts",
+								":id-contacts"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "e09e9d41-3560-4af6-ae4b-b5eece7ab7bf"
+								},
+								{
+									"key": "id-contacts",
+									"value": "7cf507ef-6c25-49d0-8b02-347ced5dcdbd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete PatientContact de Paciente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/contacts/:id-contacts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"contacts",
+								":id-contacts"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "e09e9d41-3560-4af6-ae4b-b5eece7ab7bf"
+								},
+								{
+									"key": "id-contacts",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById PatientContact de Paciente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/contacts/:id-contacts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"contacts",
+								":id-contacts"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "e09e9d41-3560-4af6-ae4b-b5eece7ab7bf"
+								},
+								{
+									"key": "id-contacts",
+									"value": "7cf507ef-6c25-49d0-8b02-347ced5dcdbd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll PatientContact de Paciente",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/patients/:id/contacts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"patients",
+								":id",
+								"contacts"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "e09e9d41-3560-4af6-ae4b-b5eece7ab7bf"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks End-Point",
+			"item": [
+				{
+					"name": "Post Task de usuário",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"describe\": \"Tomar remédio para pressão alta\",\r\n  \"scheduledDate\": \"2025-10-03T10:00:00\",\r\n  \"patientId\": \"55555555-5555-5555-5555-555555555555\",\r\n  \"taskTypeId\": \"66666666-6666-6666-6666-666666666666\",\r\n  \"priority\": 3,\r\n  \"medicationsIds\": []\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:id/tasks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id",
+								"tasks"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task de usuário",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"describe\": \"Tomar remédio para pressão alta\",\r\n  \"scheduledDate\": \"2025-09-25T08:30:00\",\r\n  \"priority\": 3,\r\n  \"patientId\": \"ed60b2d4-b8bc-445e-b987-a44f6ab65839\",\r\n  \"taskTypeId\": \"e996ae4f-89a5-4f80-8446-cf81533e2b96\",\r\n  \"medicationsIds\": [\r\n    \"46c6cead-11ee-429a-8a20-fb9a520d9f8c\"\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:id/tasks/:id-task",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id",
+								"tasks",
+								":id-task"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
+								},
+								{
+									"key": "id-task",
+									"value": "ebd236cf-b87d-4955-88c3-e5bbb522bb92"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task de usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/:id/tasks/:id-task",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id",
+								"tasks",
+								":id-task"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
+								},
+								{
+									"key": "id-task",
+									"value": "8c253ebd-68a8-41a4-a013-0f630c7bbb17"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Task de usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/:id/tasks/:id-task",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id",
+								"tasks",
+								":id-task"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
+								},
+								{
+									"key": "id-task",
+									"value": "8c253ebd-68a8-41a4-a013-0f630c7bbb17"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll Pageable Task de usuário",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/:id/tasks?page=0&pageSize=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":id",
+								"tasks"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task-types End-Point",
+			"item": [
+				{
+					"name": "Post Task-types",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"describe\": \"Descrição da taREfa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/task-types",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"task-types"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task-types",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"describe\": \"TTESTSETSETSETSETSET\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/task-types/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"task-types",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "88b679a2-ce5b-4344-a10a-1bc20f629037"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task-types",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/task-types/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"task-types",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cfff6ae6-c8ad-41ae-9c5d-96ccba0db0de"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Task-types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/task-types/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"task-types",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "cfff6ae6-c8ad-41ae-9c5d-96ccba0db0de"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll Task-types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/task-types",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"task-types"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Public-emergency End-Point",
+			"item": [
+				{
+					"name": "Post Public-emergency",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"serviceName\": \"Bombeiros2\",\r\n  \"phoneNumber\": \"193\",\r\n  \"description\": \"Atendimento de emergência para incêndios e salvamento.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/public-emergency",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"public-emergency"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Public-emergency",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"serviceName\": \"teste guilherme\",\r\n  \"phoneNumber\": \"191\",\r\n  \"description\": \"Teste de alteração.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/public-emergency/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"public-emergency",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65630aec-795b-4db7-8f5b-e67f0f441e61"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Public-emergency",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/public-emergency/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"public-emergency",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "bd269ad8-0cd9-4160-8c90-1dc0825d8345"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Public-emergency",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/public-emergency/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"public-emergency",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "65630aec-795b-4db7-8f5b-e67f0f441e61"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll Public-emergency",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/public-emergency",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"public-emergency"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Medicament End-Point",
+			"item": [
+				{
+					"name": "Post Medicaments",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Paracetamol24\",\r\n  \"dosage\": 500.0,\r\n  \"frequency\": 8,\r\n  \"observation\": \"Administrar após refeições\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/medications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"medications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Medicaments",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Paracetamol3\",\r\n  \"dosage\": 34524.0,\r\n  \"frequency\": 9,\r\n  \"observation\": \"teste gui\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/medications/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"medications",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "84710165-a45f-416a-a433-ce4301258b87"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Medicaments",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/medications/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"medications",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "84710165-a45f-416a-a433-ce4301258b87"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetById Medicaments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Guilherme da Silva Boava\",\r\n    \"userName\": \"guiboava\",\r\n    \"email\": \"guiboava@hotmail.com\",\r\n    \"cpf\": \"123-098-345-43\",\r\n    \"userType\": \"F\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"(48) 9 99239935\",\r\n    \"cep\": \"8888-888\",\r\n    \"birthDate\": \"1998-06-22\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/medications/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"medications",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6907d6d0-78b5-46e5-98da-2f4c2a971c7b"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAll Medicaments",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/medications",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"medications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UserPatient Vinculo End-Point",
+			"item": [
+				{
+					"name": "Vincular Paciente a Usuario",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "5824a6d5-846d-4d89-aad3-91cfd86287ed",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/users/:userId/patients/:patientId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":userId",
+								"patients",
+								":patientId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "3bbfee9c-c1e9-4666-b7d1-7c1a9d0d3446"
+								},
+								{
+									"key": "patientId",
+									"value": "38ac8ca3-ca13-4aa0-afda-0a2ef005bcf7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Desvincular Paciente a Usuario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/:userId/patients/:patientId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":userId",
+								"patients",
+								":patientId"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": ""
+								},
+								{
+									"key": "patientId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pegar Pacientes por Usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/users/:userId/patients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								":userId",
+								"patients"
+							],
+							"variable": [
+								{
+									"key": "userId",
+									"value": "3bbfee9c-c1e9-4666-b7d1-7c1a9d0d3446"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
