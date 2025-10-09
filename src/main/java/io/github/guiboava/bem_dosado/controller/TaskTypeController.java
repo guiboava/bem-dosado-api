@@ -22,7 +22,7 @@ public class TaskTypeController implements GenericController {
     private final TaskTypeService service;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> createTaskType(@RequestBody @Valid TaskTypeRequestDTO dto) {
 
         URI uri = generateHeaderLocation(service.save(dto));
@@ -31,7 +31,7 @@ public class TaskTypeController implements GenericController {
     }
 
     @PutMapping("/{taskTypeId}")
-    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> updateTaskType(
             @PathVariable("taskTypeId") UUID taskTypeId,
             @RequestBody @Valid TaskTypeRequestDTO dto) {
@@ -42,7 +42,7 @@ public class TaskTypeController implements GenericController {
     }
 
     @DeleteMapping("/{taskTypeId}")
-    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> deleteTaskType(@PathVariable("taskTypeId") UUID taskTypeId) {
 
         service.delete(taskTypeId);

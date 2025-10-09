@@ -24,7 +24,7 @@ public class PatientController implements GenericController {
     private final PatientService service;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> createPatient(@RequestBody @Valid PatientRequestDTO dto) {
 
         URI uri = generateHeaderLocation(service.save(dto));
@@ -33,7 +33,7 @@ public class PatientController implements GenericController {
     }
 
     @PutMapping("/{patientId}")
-    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> updatePatient(@PathVariable UUID patientId, @RequestBody @Valid PatientRequestDTO dto) {
 
         service.update(patientId, dto);
@@ -42,7 +42,7 @@ public class PatientController implements GenericController {
     }
 
     @DeleteMapping("/{patientId}")
-    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER')")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     public ResponseEntity<Void> deletePatient(@PathVariable("patientId") UUID patientId) {
 
         service.delete(patientId);
