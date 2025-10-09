@@ -3,7 +3,8 @@ package io.github.guiboava.bem_dosado.entity.model.enums;
 public enum Gender {
     
     M("Homem"),
-    F("Mulher");
+    F("Mulher"),
+    O("Outro");
 
     private final String fullGender;
 

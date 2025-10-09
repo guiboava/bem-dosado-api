@@ -26,4 +26,6 @@ public abstract class UserMapper {
 
     public abstract UserResponseDTO toDTO(User user);
 
+    @Mapping(target = "confirmPassword", expression = "java(user.getPassword())")
+    public abstract UserRequestDTO toRequestDTO(User user);
 }
