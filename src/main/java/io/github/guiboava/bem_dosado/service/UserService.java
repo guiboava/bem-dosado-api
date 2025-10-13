@@ -126,4 +126,9 @@ public class UserService {
     public User getByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    public User getByLoginByEmail(String login) {
+        return userRepository.getByEmail(login);
+    }
+
 }

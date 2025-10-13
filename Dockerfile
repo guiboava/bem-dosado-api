@@ -1,30 +1,35 @@
-# Etapa 1: Build da aplicação
-FROM maven:3.9.4-eclipse-temurin-21 AS build
+FROM postgres:17.5
+
+# Opcional: definir variáveis de ambiente padrão
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=bem_dosado_db
+
+# Expor porta do container
+EXPOSE 5432
+
+FROM dpage/pgadmin4:7
+
+# Variáveis de ambiente
+ENV PGADMIN_DEFAULT_EMAIL=admin@admin.com
+ENV PGADMIN_DEFAULT_PASSWORD=admin
+EXPOSE 80
+
+# Usando uma imagem JDK para rodar Spring Boot
+# Usando JDK 21
+FROM eclipse-temurin:21-jdk-jammy
+
 WORKDIR /app
 
-# Copiar pom.xml e baixar dependências (cache)
-COPY pom.xml .
-RUN mvn dependency:go-offline
+# Copia o JAR do Spring Boot
+COPY target/bem-dosado-0.0.1-SNAPSHOT.jar app.jar
 
-# Copiar código
-COPY src ./src
+# Instala dockerize
+RUN apt-get update && apt-get install -y wget tar \
+    && wget https://github.com/jwilder/dockerize/releases/download/v0.9.2/dockerize-linux-amd64-v0.9.2.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-v0.9.2.tar.gz
 
-# Build sem testes
-RUN mvn clean package -DskipTests
-
-# Etapa 2: Rodar a aplicação
-FROM eclipse-temurin:21-jdk
-WORKDIR /app
-
-# Copiar JAR final da etapa de build
-COPY --from=build /app/target/*.jar app.jar
-
-# Copiar script wait-for-it
-COPY wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
+# Espera o banco estar pronto antes de iniciar a aplicação
+ENTRYPOINT ["dockerize", "-wait", "tcp://db:5432", "-timeout", "60s", "java", "-jar", "app.jar"]
 
 EXPOSE 8080
-
-# Aguarda o DB estar pronto antes de iniciar o Spring Boot
-# Adiciona timeout de 60s e intervalo de 2s entre tentativas
-ENTRYPOINT ["/wait-for-it.sh", "db:5432", "--timeout=60", "--strict", "--", "java", "-jar", "app.jar"]

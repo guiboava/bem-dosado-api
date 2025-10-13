@@ -19,7 +19,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Guilherme da Silva Boava\",\r\n    \"login\": \"familiar\",\r\n    \"email\": \"gu7boavkça@6hotmdail.com\",\r\n    \"cpf\": \"90936370963\",\r\n    \"userType\": \"F\",\r\n    \"password\": \"123456\",\r\n    \"confirmPassword\":\"123456\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"(48) 9 99239935\",\r\n    \"cep\": \"88816360\",\r\n    \"birthDate\": \"1998-06-22\"\r\n}\r\n",
+							"raw": "{\r\n    \"name\": \"Lucia Andreia da Silva Boava\",\r\n    \"login\": \"andreia\",\r\n    \"email\": \"lucia_andreia@hotmdail.com\",\r\n    \"cpf\": \"11453873902\",\r\n    \"userType\": \"C\",\r\n    \"password\": \"senhateste\",\r\n    \"confirmPassword\":\"senhateste\",\r\n    \"gender\": \"M\",\r\n    \"phoneNumber\": \"(48) 9 99239935\",\r\n    \"cep\": \"88816360\",\r\n    \"birthDate\": \"1998-06-22\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -283,7 +283,14 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJmNmFlMjU3MS1mOTVkLTRkNWEtYWY3Yy1mOTU1OTliMGVhYTAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJiZW0tZG9zYWRvIiwic3ViIjoiYW5kcmVpYSIsImV4cCI6MTc2MDI1NTgzMywiaWF0IjoxNzYwMjUyMjMzLCJzY29wZSI6IlVTRVIifQ.Qdfm1r85clKAqrTORtoreEIxVDEuMYGYa7SRtg3kVzQxZH5snlw0vYY4Ht6uFSWCzH0C0SVd09Ciun2P0CGGwwP38XvebuXSqmD-is7NrfdTstjmfd9uSMpMBduKay_EO4b8qgQ1ORCr-fNa-Gtju0MB8Is5T-NhHc6J-XLNfqNvHLXxku5p4RXum1KRrN1MvZ_Lm_6BWc933i3COjuJfsCoZXSC1hPUEHiIoReE3PTYWptAPozKvw7hQTewNIspEkdRbsC_lnn8M0rK1ZFWmTo2MpmPY41iQHaF1ipVrHeveij4ZWXdddSVnzpAVtlz9_zaiixKhYvHYijXY2Wazw",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -704,7 +711,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/users/:id/tasks",
+							"raw": "http://localhost:8080/users/tasks",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -712,14 +719,7 @@
 							"port": "8080",
 							"path": [
 								"users",
-								":id",
 								"tasks"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
-								}
 							]
 						}
 					},
@@ -740,7 +740,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/users/:id/tasks/:id-task",
+							"raw": "http://localhost:8080/users/tasks/:id-task",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -748,18 +748,13 @@
 							"port": "8080",
 							"path": [
 								"users",
-								":id",
 								"tasks",
 								":id-task"
 							],
 							"variable": [
 								{
-									"key": "id",
-									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
-								},
-								{
 									"key": "id-task",
-									"value": "ebd236cf-b87d-4955-88c3-e5bbb522bb92"
+									"value": ""
 								}
 							]
 						}
@@ -772,7 +767,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:id/tasks/:id-task",
+							"raw": "http://localhost:8080/users/tasks/:id-task",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -780,15 +775,10 @@
 							"port": "8080",
 							"path": [
 								"users",
-								":id",
 								"tasks",
 								":id-task"
 							],
 							"variable": [
-								{
-									"key": "id",
-									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
-								},
 								{
 									"key": "id-task",
 									"value": "8c253ebd-68a8-41a4-a013-0f630c7bbb17"
@@ -804,7 +794,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:id/tasks/:id-task",
+							"raw": "http://localhost:8080/users/tasks/:id-task",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -812,15 +802,10 @@
 							"port": "8080",
 							"path": [
 								"users",
-								":id",
 								"tasks",
 								":id-task"
 							],
 							"variable": [
-								{
-									"key": "id",
-									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
-								},
 								{
 									"key": "id-task",
 									"value": "8c253ebd-68a8-41a4-a013-0f630c7bbb17"
@@ -836,7 +821,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:id/tasks?page=0&pageSize=10",
+							"raw": "http://localhost:8080/users/tasks?page=0&pageSize=10",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -844,7 +829,6 @@
 							"port": "8080",
 							"path": [
 								"users",
-								":id",
 								"tasks"
 							],
 							"query": [
@@ -855,12 +839,6 @@
 								{
 									"key": "pageSize",
 									"value": "10"
-								}
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": "40ff68aa-aa3f-449f-83c4-d579cc6ab23e"
 								}
 							]
 						}
@@ -1245,6 +1223,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJmNmFlMjU3MS1mOTVkLTRkNWEtYWY3Yy1mOTU1OTliMGVhYTAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJiZW0tZG9zYWRvIiwic3ViIjoiYW5kcmVpYSIsImV4cCI6MTc2MDI1NjI1MSwiaWF0IjoxNzYwMjUyNjUxLCJzY29wZSI6IlVTRVIifQ.Es3fVX6VnV8tT7WZMDqtiyyo-iDQ0Wa-8BjOdh0TFCBOZyt3rLt6sUfBmCjQ3vBhPX8yASF1_Ez07RHOzTwpxOLr4ADza4RpIbRezBdUgT3wAfvILjP_o2_rsNR-f46Bngm2Lr6RyB6m_h_Ae6-jM2_VcRU9RJR4ubyEdhb_a32gUQmlGpi92-nEdVt5vm2ybZ4rJanuoA8lRvgneWa1eVMnvETR5N1IwpMrTmr9ptMsn19afe-bDSEyRNX2JVGsK1dZJL5EP0djBbX2ScskF1uoFkKRM1kSt2ob6teK3_7R5sOixHk7a1JUvN4Wli3Y_Ox_bwvslY7pNUSoSDEu0g",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -1279,7 +1267,14 @@
 					},
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiJmNmFlMjU3MS1mOTVkLTRkNWEtYWY3Yy1mOTU1OTliMGVhYTAiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJiZW0tZG9zYWRvIiwic3ViIjoiYW5kcmVpYSIsImV4cCI6MTc2MDI1NTgzMywiaWF0IjoxNzYwMjUyMjMzLCJzY29wZSI6IlVTRVIifQ.Qdfm1r85clKAqrTORtoreEIxVDEuMYGYa7SRtg3kVzQxZH5snlw0vYY4Ht6uFSWCzH0C0SVd09Ciun2P0CGGwwP38XvebuXSqmD-is7NrfdTstjmfd9uSMpMBduKay_EO4b8qgQ1ORCr-fNa-Gtju0MB8Is5T-NhHc6J-XLNfqNvHLXxku5p4RXum1KRrN1MvZ_Lm_6BWc933i3COjuJfsCoZXSC1hPUEHiIoReE3PTYWptAPozKvw7hQTewNIspEkdRbsC_lnn8M0rK1ZFWmTo2MpmPY41iQHaF1ipVrHeveij4ZWXdddSVnzpAVtlz9_zaiixKhYvHYijXY2Wazw",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -1304,7 +1299,7 @@
 			]
 		},
 		{
-			"name": "UserPatient Vinculo End-Point",
+			"name": "Vincular Paciente",
 			"item": [
 				{
 					"name": "Vincular Paciente a Usuario",
@@ -1313,13 +1308,13 @@
 							"type": "basic",
 							"basic": [
 								{
-									"key": "username",
+									"key": "password",
 									"value": "",
 									"type": "string"
 								},
 								{
-									"key": "password",
-									"value": "5824a6d5-846d-4d89-aad3-91cfd86287ed",
+									"key": "username",
+									"value": "",
 									"type": "string"
 								}
 							]
@@ -1331,7 +1326,7 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "http://localhost:8080/users/:userId/patients/:patientId",
+							"raw": "http://localhost:8080/users/patients/:patientId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1339,15 +1334,10 @@
 							"port": "8080",
 							"path": [
 								"users",
-								":userId",
 								"patients",
 								":patientId"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": "3bbfee9c-c1e9-4666-b7d1-7c1a9d0d3446"
-								},
 								{
 									"key": "patientId",
 									"value": "38ac8ca3-ca13-4aa0-afda-0a2ef005bcf7"
@@ -1363,7 +1353,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:userId/patients/:patientId",
+							"raw": "http://localhost:8080/users/patients/:patientId",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1371,15 +1361,10 @@
 							"port": "8080",
 							"path": [
 								"users",
-								":userId",
 								"patients",
 								":patientId"
 							],
 							"variable": [
-								{
-									"key": "userId",
-									"value": ""
-								},
 								{
 									"key": "patientId",
 									"value": ""
@@ -1395,7 +1380,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/users/:userId/patients",
+							"raw": "http://localhost:8080/users/patients",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1403,20 +1388,63 @@
 							"port": "8080",
 							"path": [
 								"users",
-								":userId",
 								"patients"
-							],
-							"variable": [
-								{
-									"key": "userId",
-									"value": "3bbfee9c-c1e9-4666-b7d1-7c1a9d0d3446"
-								}
 							]
 						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic bWV1LWNsaWVudDpjbGllbnQtc2VjcmV0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"lucia_andreia@hotmdail.com\",\r\n    \"password\": \"senhateste\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

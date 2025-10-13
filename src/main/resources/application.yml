@@ -2,7 +2,7 @@ spring:
   application:
     name: bem-dosado
   datasource:
-    url: jdbc:postgresql://localhost:5434/bem_dosado_db
+    url: jdbc:postgresql://db:5432/bem_dosado_db
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
