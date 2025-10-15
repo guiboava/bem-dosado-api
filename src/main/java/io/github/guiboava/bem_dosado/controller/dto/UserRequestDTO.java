@@ -46,7 +46,9 @@ public record UserRequestDTO(
 
         @NotNull(message = "A data de nascimento é obrigatória.")
         @Past(message = "A data de nascimento deve estar no passado.")
-        LocalDate birthDate
+        LocalDate birthDate,
+
+        String base64Image
 ) {
     @AssertTrue(message = "As senhas não coincidem")
     public boolean isPasswordsMatching() {

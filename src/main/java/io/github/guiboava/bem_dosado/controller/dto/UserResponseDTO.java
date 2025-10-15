@@ -17,5 +17,6 @@ public record UserResponseDTO(UUID id,
                               Gender gender,
                               String phoneNumber,
                               String cep,
-                              LocalDate birthDate) {
+                              LocalDate birthDate,
+                              String base64Image) {
 }

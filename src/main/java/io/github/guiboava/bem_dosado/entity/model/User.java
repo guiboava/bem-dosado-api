@@ -46,7 +46,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType;
 
-    /* Camada de service deve salvar a senha em forma de HASH, por isso o tamanho de 60 Caracteres.*/
     @Column(name = "password", nullable = false, length = 60)
     private String password;
 
@@ -62,6 +61,9 @@ public class User {
 
     @Column(name = "birth_date", nullable = false)
     private LocalDate birthDate;
+
+    @Column(name = "base64_image")
+    private String base64Image;
 
     @CreatedDate
     @Column(name = "created_date", nullable = false)

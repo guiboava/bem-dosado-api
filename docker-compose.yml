@@ -1,54 +1,55 @@
-version: "3.9"
-
 services:
   db:
-    image: postgres:17.5
-    container_name: bemdosado-db
+    image: postgres:16
+    container_name: bem-dosado-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: bem_dosado_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bem_dosado
+    restart: always
     ports:
       - "5432:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d bem_dosado_db"]
-      interval: 5s
-      timeout: 3s
-      retries: 5
-      start_period: 5s
-    networks:
-      - bemdosado-network
+  app:
+     build: .
+     container_name: bem-dosado-app
+     ports:
+       - "8080:8080"
+     environment:
+       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bem_dosado_db
+       SPRING_DATASOURCE_USERNAME: postgres
+       SPRING_DATASOURCE_PASSWORD: postgres
+       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+       GOOGLE_CLIENT_ID: seu_client_id
+       GOOGLE_CLIENT_SECRET: seu_client_secret
+       driver-class-name: org.postgresql.Driver
+     networks:
+       - bem_dosado
+     restart: always
+
 
   pgadmin:
-    image: dpage/pgadmin4:7
-    container_name: bemdosado-pgadmin
+    image: dpage/pgadmin4
+    container_name: pgadmin4_img
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
-      - "8081:80"
-    depends_on:
-      - db
+      - "15432:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
     networks:
-      - bemdosado-network
-
-  springboot:
-    build: .
-    container_name: bemdosado-app
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/bem_dosado_db
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - bemdosado-network
+      - bem_dosado
+    restart: always
+volumes:
+  postgres_data:
+  pgadmin_data:
 
 networks:
-  bemdosado-network:
+  bem_dosado:
     driver: bridge
+
