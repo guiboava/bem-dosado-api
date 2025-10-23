@@ -2,6 +2,7 @@ package io.github.guiboava.bem_dosado.validator;
 
 import io.github.guiboava.bem_dosado.controller.dto.LoginRequestDTO;
 import io.github.guiboava.bem_dosado.entity.model.User;
+import io.github.guiboava.bem_dosado.exception.InvalidCredentialsException;
 import io.github.guiboava.bem_dosado.exception.OperationNotPermittedException;
 import io.github.guiboava.bem_dosado.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +25,11 @@ public class LoginValidator {
         }
 
         if (user == null) {
-            throw new OperationNotPermittedException("Usuário e/ou senha incorretos.");
+            throw new InvalidCredentialsException("Usuário e/ou senha incorretos.");
         }
 
         if (!encoder.matches(dto.password(), user.getPassword())) {
-            throw new OperationNotPermittedException("Usuário e/ou senha incorretos.");
+            throw new InvalidCredentialsException("Usuário e/ou senha incorretos.");
         }
 
         return user;

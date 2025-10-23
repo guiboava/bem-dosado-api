@@ -3,6 +3,10 @@ package io.github.guiboava.bem_dosado.controller;
 import io.github.guiboava.bem_dosado.controller.dto.PatientResponseDTO;
 import io.github.guiboava.bem_dosado.entity.model.User;
 import io.github.guiboava.bem_dosado.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/users/patients")
+@Tag(name = "Vínculos de paciente com usuário")
 public class UserPatientController {
 
     private final UserService userService;
@@ -23,6 +28,12 @@ public class UserPatientController {
 
     @PostMapping("/{patientId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Víncular.",description = "Adicionar um vínculo de paciente com usuário.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Cadastrado com sucesso."),
+            @ApiResponse(responseCode = "401", description = "Inautorizado."),
+            @ApiResponse(responseCode = "422", description = "Erro de validação.")
+    })
     public ResponseEntity<Void> addPatient(
             @AuthenticationPrincipal User user,
             @PathVariable UUID patientId) {
@@ -32,6 +43,7 @@ public class UserPatientController {
 
     @DeleteMapping("/{patientId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Desvíncular.",description = "Remover um vínculo de paciente com usuário.")
     public ResponseEntity<Void> removePatient(
             @AuthenticationPrincipal User user,
             @PathVariable UUID patientId) {
@@ -41,6 +53,7 @@ public class UserPatientController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Listar.",description = "Mostra todos vínculos de paciente de um usuário.")
     public ResponseEntity<List<PatientResponseDTO>> listPatients(
             @AuthenticationPrincipal User user) {
         return ResponseEntity.ok(userService.getUserPatients(user.getId()));

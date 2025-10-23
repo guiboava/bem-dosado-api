@@ -1,24 +1,29 @@
 package io.github.guiboava.bem_dosado.controller.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
-@Data
-public class ClientRequestDTO {
+@Schema(name = "Cliente")
+public record ClientRequestDTO(
 
-    @NotNull
-    @Length(max = 150)
-    private String clientId;
+        @NotNull
+        @Length(max = 150)
+        @Schema(name = "idCliente")
+        String clientId,
 
-    @NotNull
-    @Length(max = 400)
-    private String clientSecret;
+        @NotNull
+        @Length(max = 400)
+        @Schema(name = "secretCliente")
+        String clientSecret,
 
-    @NotNull
-    @Length(max = 200)
-    private String redirectURI;
+        @NotNull
+        @Length(max = 200)
+        @Schema(name = "linkRedirecionamento")
+        String redirectURI,
 
-    @Length(max = 50)
-    private String scope;
+        @Length(max = 50)
+        @Schema(name = "scope")
+        String scope
+) {
 }

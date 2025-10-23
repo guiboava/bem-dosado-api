@@ -5,6 +5,10 @@ import io.github.guiboava.bem_dosado.controller.dto.PatientResponseDTO;
 import io.github.guiboava.bem_dosado.entity.model.enums.Dependency;
 import io.github.guiboava.bem_dosado.entity.model.enums.Gender;
 import io.github.guiboava.bem_dosado.service.PatientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +23,19 @@ import java.util.UUID;
 @RestController()
 @RequestMapping("/patients")
 @RequiredArgsConstructor
+@Tag(name = "Paciente")
 public class PatientController implements GenericController {
 
     private final PatientService service;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Salvar", description = "Criar um novo paciente dentro do sistema.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Cadastrado com sucesso."),
+            @ApiResponse(responseCode = "401", description = "Inautorizado."),
+            @ApiResponse(responseCode = "422", description = "Erro de validação.")
+    })
     public ResponseEntity<Void> createPatient(@RequestBody @Valid PatientRequestDTO dto) {
 
         URI uri = generateHeaderLocation(service.save(dto));
@@ -34,6 +45,7 @@ public class PatientController implements GenericController {
 
     @PutMapping("/{patientId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Atualizar.", description = "Atualizar um paciente dentro do sistema.")
     public ResponseEntity<Void> updatePatient(@PathVariable UUID patientId, @RequestBody @Valid PatientRequestDTO dto) {
 
         service.update(patientId, dto);
@@ -43,6 +55,7 @@ public class PatientController implements GenericController {
 
     @DeleteMapping("/{patientId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Deletar.", description = "Deletar um paciente dentro do sistema.")
     public ResponseEntity<Void> deletePatient(@PathVariable("patientId") UUID patientId) {
 
         service.delete(patientId);
@@ -51,6 +64,7 @@ public class PatientController implements GenericController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Listar.", description = "Procurar por pacientes dentro do sistema.")
     public ResponseEntity<List<PatientResponseDTO>> searchPatient(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "cpf", required = false) String cpf, @RequestParam(value = "birthDate", required = false) LocalDate birthDate, @RequestParam(value = "gender", required = false) Gender gender, @RequestParam(value = "cep", required = false) String cep, @RequestParam(value = "dependency", required = false) Dependency dependency, @RequestParam(value = "healthPlan", required = false) String healthPlan, @RequestParam(value = "cardNumber", required = false) String cardNumber, @RequestParam(value = "allergies", required = false) String allergies, @RequestParam(value = "medications", required = false) String medicationsDescription, @RequestParam(value = "note", required = false) String note) {
 
         return ResponseEntity.ok(service.searchByExample(name, cpf, birthDate, gender, cep, dependency, healthPlan, cardNumber, allergies, medicationsDescription, note));
@@ -59,6 +73,7 @@ public class PatientController implements GenericController {
 
     @GetMapping("/{patientId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Encontrar.", description = "Pesquisar por um paciente de usuário dentro do sistema.")
     public ResponseEntity<PatientResponseDTO> getByPatientId(@PathVariable("patientId") UUID patientId) {
 
         return ResponseEntity.ok(service.getById(patientId));

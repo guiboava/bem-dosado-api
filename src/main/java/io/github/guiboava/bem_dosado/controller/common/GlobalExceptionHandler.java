@@ -2,10 +2,7 @@ package io.github.guiboava.bem_dosado.controller.common;
 
 import io.github.guiboava.bem_dosado.controller.dto.ErrorField;
 import io.github.guiboava.bem_dosado.controller.dto.ErrorResponse;
-import io.github.guiboava.bem_dosado.exception.DuplicateRegisterException;
-import io.github.guiboava.bem_dosado.exception.EntityInUseException;
-import io.github.guiboava.bem_dosado.exception.OperationNotPermittedException;
-import io.github.guiboava.bem_dosado.exception.ResourceNotFoundException;
+import io.github.guiboava.bem_dosado.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
@@ -97,6 +94,17 @@ public class GlobalExceptionHandler {
                 e.getMessage(),
                 List.of(),
                 request.getRequestURI());
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse handleInvalidCredentialsException(InvalidCredentialsException e, HttpServletRequest request) {
+        return new ErrorResponse(LocalDateTime.now(),
+                HttpStatus.UNAUTHORIZED.value(),
+                e.getMessage(),
+                List.of(),
+                request.getRequestURI()
+        );
     }
 
     @ExceptionHandler(OperationNotPermittedException.class)

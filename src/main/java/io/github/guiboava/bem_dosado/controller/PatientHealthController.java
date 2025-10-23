@@ -4,6 +4,10 @@ package io.github.guiboava.bem_dosado.controller;
 import io.github.guiboava.bem_dosado.controller.dto.PatientHealthRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientHealthResponseDTO;
 import io.github.guiboava.bem_dosado.service.PatientHealthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +21,19 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/patients/{patientId}/healths")
 @RequiredArgsConstructor
+@Tag(name = "Saúde Paciente")
 public class PatientHealthController implements GenericController {
 
     private final PatientHealthService patientHealthService;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Salvar", description = "Criar um novo dado de saúde de paciente dentro do sistema.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Cadastrado com sucesso."),
+            @ApiResponse(responseCode = "401", description = "Inautorizado."),
+            @ApiResponse(responseCode = "422", description = "Erro de validação.")
+    })
     public ResponseEntity<Void> createPatientHealth(@PathVariable("patientId") UUID patientId, @RequestBody @Valid PatientHealthRequestDTO dto) {
 
         URI uri = generateHeaderLocation(patientHealthService.save(dto, patientId));
@@ -33,6 +44,7 @@ public class PatientHealthController implements GenericController {
 
     @PutMapping("/{healthId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Atualizar.", description = "Atualizar um dado de saúde de paciente dentro do sistema.")
     public ResponseEntity<Void> updatePatientHealth(
             @PathVariable("patientId") UUID patientId,
             @PathVariable("healthId") UUID healthId,
@@ -45,6 +57,7 @@ public class PatientHealthController implements GenericController {
 
     @DeleteMapping("/{healthId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Deletar.", description = "Deletar um dado de saúde de paciente dentro do sistema.")
     public ResponseEntity<Void> deletePatientHealth(
             @PathVariable("patientId") UUID patientId,
             @PathVariable("healthId") UUID healthId) {
@@ -56,6 +69,7 @@ public class PatientHealthController implements GenericController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Listar.", description = "Listar dados de saúde de paciente dentro do sistema.")
     public ResponseEntity<List<PatientHealthResponseDTO>> getAllByPatientId(@PathVariable("patientId") UUID patientId) {
 
         List<PatientHealthResponseDTO> list = patientHealthService.getByPatientId(patientId);
@@ -64,6 +78,7 @@ public class PatientHealthController implements GenericController {
 
     @GetMapping("/{healthId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Listar.", description = "Pesquisar um dado de saúde de paciente dentro do sistema.")
     public ResponseEntity<PatientHealthResponseDTO> getByHealthId(@PathVariable("patientId") UUID patientId, @PathVariable("healthId") UUID healthId) {
 
         return ResponseEntity.ok(patientHealthService.getByPatientIdAndHealthId(patientId, healthId));

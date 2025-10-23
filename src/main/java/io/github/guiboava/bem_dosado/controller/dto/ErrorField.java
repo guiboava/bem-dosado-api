@@ -1,4 +1,10 @@
 package io.github.guiboava.bem_dosado.controller.dto;
 
-public record ErrorField(String field, String error) {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(name = "Resposta Campo Erro", hidden = true)
+public record ErrorField(@Schema(hidden = true)
+                         String field,
+                         @Schema(hidden = true)
+                         String error) {
 }
