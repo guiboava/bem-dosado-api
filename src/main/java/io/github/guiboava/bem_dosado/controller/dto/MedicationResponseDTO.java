@@ -6,7 +6,7 @@ public record MedicationResponseDTO(
         UUID id,
         String name,
         Double dosage,
-        Integer frequency,
+        String frequency,
         String observation
         ) {
 }

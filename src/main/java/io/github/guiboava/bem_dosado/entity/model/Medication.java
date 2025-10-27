@@ -32,7 +32,7 @@ public class Medication {
     private Double dosage;
 
     @Column(name = "frequency", nullable = false)
-    private Integer frequency;
+    private String frequency;
 
     @Column(name = "observation", nullable = false)
     private String observation;

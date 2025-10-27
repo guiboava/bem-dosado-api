@@ -16,7 +16,7 @@ public record MedicationRequestDTO(
 
         @NotNull(message = "A frequência é obrigatória")
         @Schema(name = "frequencia")
-        Integer frequency,
+        String frequency,
 
         @NotBlank(message = "A observação é obrigatória")
         @Schema(name = "observacao")
