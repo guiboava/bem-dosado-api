@@ -1,6 +1,7 @@
 package io.github.guiboava.bem_dosado.service;
 
 import io.github.guiboava.bem_dosado.controller.dto.PatientResponseDTO;
+import io.github.guiboava.bem_dosado.controller.dto.UserPatchRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.UserRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.UserResponseDTO;
 import io.github.guiboava.bem_dosado.controller.mappers.PatientMapper;
@@ -45,9 +46,7 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
-    public void update(UUID userId, UserRequestDTO dto) {
-
-        User user = getEntityById(userId);
+    public void update(User user, UserRequestDTO dto) {
 
         userMapper.updateEntityFromDto(dto, user);
         userValidator.validate(user);
@@ -57,6 +56,16 @@ public class UserService {
         }
 
         userRepository.save(user);
+    }
+
+
+    public void patchUpdate(User user, UserPatchRequestDTO dto) {
+
+        if (dto.base64Image() != null && !dto.base64Image().isBlank()) {
+            user.setBase64Image(dto.base64Image());
+            userRepository.save(user);
+        }
+
     }
 
     public void delete(UUID userId) {
@@ -131,4 +140,9 @@ public class UserService {
         return userRepository.getByEmail(login);
     }
 
+    public UserResponseDTO getByUser(User user) {
+
+        return userMapper.toDTO(user);
+
+    }
 }

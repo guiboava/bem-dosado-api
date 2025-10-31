@@ -30,6 +30,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/auth/login").permitAll();
                     authorize.requestMatchers(HttpMethod.POST, "/users/**").permitAll();
+                    authorize.requestMatchers("/actuator/health", "/actuator/info").permitAll();
                     authorize.anyRequest().authenticated();
                 })
                 .oauth2Login(oauth2 -> {
@@ -51,7 +52,8 @@ public class SecurityConfiguration {
                     "/swagger-resources/**",
                     "/swagger-ui.html",
                     "/swagger-ui/**",
-                    "/webjars/**"
+                    "/webjars/**",
+                    "/actuator/**"
             );
         };
     }
