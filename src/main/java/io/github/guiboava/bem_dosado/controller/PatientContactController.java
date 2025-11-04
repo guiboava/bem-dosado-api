@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/patients/{patientId}/contacts")
 @RequiredArgsConstructor
 @Tag(name = "Contato de Paciente")
+@Slf4j
 public class PatientContactController implements GenericController {
 
     private final PatientContactService patientContactService;
@@ -35,6 +37,8 @@ public class PatientContactController implements GenericController {
     })
     public ResponseEntity<Void> createPatientContact(@PathVariable("patientId") UUID patientId, @RequestBody @Valid PatientContactRequestDTO dto) {
 
+        log.info("Cadastrando um novo contato de paciente para o paciente: {}, nome do contato: {}", patientId, dto.name());
+
         URI uri = generateHeaderLocation(patientContactService.save(dto, patientId));
         return ResponseEntity.created(uri).build();
 
@@ -48,6 +52,8 @@ public class PatientContactController implements GenericController {
             @PathVariable("contactId") UUID patientContactId,
             @RequestBody @Valid PatientContactRequestDTO dto) {
 
+        log.info("Atualizando um contato de paciente para o paciente: {}, id do contato: {}", patientId, patientContactId);
+
         patientContactService.update(dto, patientId, patientContactId);
 
         return ResponseEntity.noContent().build();
@@ -59,6 +65,8 @@ public class PatientContactController implements GenericController {
     public ResponseEntity<Void> deletePatientContact(
             @PathVariable("patientId") UUID patientId,
             @PathVariable("contactId") UUID patientContactId) {
+
+        log.info("Deletando um contato de paciente para o paciente: {}, id do contato: {}", patientId, patientContactId);
 
         patientContactService.delete(patientId, patientContactId);
 

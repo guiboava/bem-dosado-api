@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @RequestMapping("/patients/{patientId}/healths")
 @RequiredArgsConstructor
 @Tag(name = "Saúde Paciente")
+@Slf4j
 public class PatientHealthController implements GenericController {
 
     private final PatientHealthService patientHealthService;
@@ -35,6 +37,8 @@ public class PatientHealthController implements GenericController {
             @ApiResponse(responseCode = "422", description = "Erro de validação.")
     })
     public ResponseEntity<Void> createPatientHealth(@PathVariable("patientId") UUID patientId, @RequestBody @Valid PatientHealthRequestDTO dto) {
+
+        log.info("Cadastrando um novo cadastro de saúde para o paciente de id: {}", patientId);
 
         URI uri = generateHeaderLocation(patientHealthService.save(dto, patientId));
 
@@ -50,6 +54,8 @@ public class PatientHealthController implements GenericController {
             @PathVariable("healthId") UUID healthId,
             @RequestBody @Valid PatientHealthRequestDTO dto) {
 
+        log.info("Atualizando um cadastro de saúde para o paciente de id: {}", patientId);
+
         patientHealthService.update(dto, patientId, healthId);
 
         return ResponseEntity.noContent().build();
@@ -61,6 +67,8 @@ public class PatientHealthController implements GenericController {
     public ResponseEntity<Void> deletePatientHealth(
             @PathVariable("patientId") UUID patientId,
             @PathVariable("healthId") UUID healthId) {
+
+        log.info("Deletando um cadastro de saúde para o paciente de id: {}", patientId);
 
         patientHealthService.delete(patientId, healthId);
 

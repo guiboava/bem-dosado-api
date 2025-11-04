@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/medications")
 @RequiredArgsConstructor
 @Tag(name = "Medicação")
+@Slf4j
 public class MedicationController implements GenericController {
 
     private final MedicationService service;
@@ -35,6 +37,8 @@ public class MedicationController implements GenericController {
     })
     public ResponseEntity<Void> createMedication(@RequestBody @Valid MedicationRequestDTO dto) {
 
+        log.info("Cadastrando uma nova medicação: {}", dto.name());
+
         URI uri = generateHeaderLocation(service.save(dto));
         return ResponseEntity.created(uri).build();
     }
@@ -46,6 +50,8 @@ public class MedicationController implements GenericController {
             @PathVariable("medicationId") UUID medicationId,
             @RequestBody @Valid MedicationRequestDTO dto) {
 
+        log.info("Atualizando a medicação de id: {}", medicationId);
+
         service.update(medicationId, dto);
 
         return ResponseEntity.noContent().build();
@@ -55,6 +61,8 @@ public class MedicationController implements GenericController {
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Deletar.", description = "Deletar uma medicação dentro do sistema.")
     public ResponseEntity<Void> deleteMedication(@PathVariable("medicationId") UUID medicationId) {
+
+        log.info("Deletando a medicação de id: {}", medicationId);
 
         service.delete(medicationId);
 

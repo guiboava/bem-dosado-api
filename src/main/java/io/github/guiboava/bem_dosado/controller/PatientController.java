@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @RequestMapping("/patients")
 @RequiredArgsConstructor
 @Tag(name = "Paciente")
+@Slf4j
 public class PatientController implements GenericController {
 
     private final PatientService service;
@@ -32,12 +34,10 @@ public class PatientController implements GenericController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Salvar", description = "Criar um novo paciente dentro do sistema.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Cadastrado com sucesso."),
-            @ApiResponse(responseCode = "401", description = "Inautorizado."),
-            @ApiResponse(responseCode = "422", description = "Erro de validação.")
-    })
+    @ApiResponses({@ApiResponse(responseCode = "201", description = "Cadastrado com sucesso."), @ApiResponse(responseCode = "401", description = "Inautorizado."), @ApiResponse(responseCode = "422", description = "Erro de validação.")})
     public ResponseEntity<Void> createPatient(@RequestBody @Valid PatientRequestDTO dto) {
+
+        log.info("Cadastrando um novo paciente: {}", dto.name());
 
         URI uri = generateHeaderLocation(service.save(dto));
         return ResponseEntity.created(uri).build();
@@ -47,8 +47,9 @@ public class PatientController implements GenericController {
     @PutMapping("/{patientId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Atualizar.", description = "Atualizar um paciente dentro do sistema.")
-    public ResponseEntity<Void> updatePatient(@PathVariable UUID patientId,
-                                              @RequestBody @Valid PatientRequestDTO dto) {
+    public ResponseEntity<Void> updatePatient(@PathVariable UUID patientId, @RequestBody @Valid PatientRequestDTO dto) {
+
+        log.info("Atualizando o usuário de id: {}", patientId);
 
         service.update(patientId, dto);
 
@@ -58,8 +59,9 @@ public class PatientController implements GenericController {
     @PatchMapping("/{patientId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Atualizar Imagem.", description = "Atualizar a imagem de um paciente dentro do sistema.")
-    public ResponseEntity<Void> patchPatient(@PathVariable UUID patientId,
-                                             @RequestBody @Valid PatientPatchRequestDTO dto) {
+    public ResponseEntity<Void> patchPatient(@PathVariable UUID patientId, @RequestBody @Valid PatientPatchRequestDTO dto) {
+
+        log.info("Atualizado a imagem do paciente de id: {}", patientId);
 
         service.patchUpdate(patientId, dto);
         return ResponseEntity.noContent().build();
@@ -70,6 +72,8 @@ public class PatientController implements GenericController {
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Deletar.", description = "Deletar um paciente dentro do sistema.")
     public ResponseEntity<Void> deletePatient(@PathVariable("patientId") UUID patientId) {
+
+        log.info("Deletando paciente de id: {}", patientId);
 
         service.delete(patientId);
         return ResponseEntity.noContent().build();

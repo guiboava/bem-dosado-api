@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +25,7 @@ import java.util.UUID;
 @RequestMapping("/users/tasks")
 @RequiredArgsConstructor
 @Tag(name = "Tarefa")
+@Slf4j
 public class TaskController implements GenericController {
 
     private final TaskService taskService;
@@ -38,6 +40,8 @@ public class TaskController implements GenericController {
     })
     public ResponseEntity<Void> createUserTask(@AuthenticationPrincipal User user, @RequestBody @Valid TaskRequestDTO dto) {
 
+        log.info("Cadastrando uma nova tarefa: {}, para o usuário: {}", dto.describe(), user.getName());
+
         URI uri = generateHeaderLocation(taskService.save(user.getId(), dto));
         return ResponseEntity.created(uri).build();
 
@@ -47,6 +51,8 @@ public class TaskController implements GenericController {
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Atualizar.", description = "Atualizar uma tarefa dentro do sistema.")
     public ResponseEntity<Void> updateTask(@AuthenticationPrincipal User user, @PathVariable("taskId") UUID taskId, @RequestBody @Valid TaskRequestDTO dto) {
+
+        log.info("Atualizando a tarefa de id: {}, para o usuário: {}", taskId, user.getName());
 
         taskService.update(user.getId(), taskId, dto);
 
@@ -58,6 +64,8 @@ public class TaskController implements GenericController {
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Deletar.", description = "Deletar uma tarefa dentro do sistema.")
     public ResponseEntity<Void> deleteTask(@AuthenticationPrincipal User user, @PathVariable("taskId") UUID taskId) {
+
+        log.info("Deletando a tarefa de id: {}, para o usuário: {}", taskId, user.getName());
 
         taskService.delete(user.getId(), taskId);
 

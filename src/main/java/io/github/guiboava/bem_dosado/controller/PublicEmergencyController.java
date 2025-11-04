@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/public-emergency")
 @RequiredArgsConstructor
 @Tag(name = "Contato de Emergência Pública")
+@Slf4j
 public class PublicEmergencyController implements GenericController {
 
     private final PublicEmergencyService service;
@@ -35,6 +37,8 @@ public class PublicEmergencyController implements GenericController {
     })
     public ResponseEntity<Void> createPublicEmergency(@RequestBody @Valid PublicEmergencyRequestDTO dto) {
 
+        log.info("Cadastrando um novo serviço publico: {}", dto.description());
+
         URI uri = generateHeaderLocation(service.save(dto));
 
         return ResponseEntity.created(uri).build();
@@ -47,6 +51,8 @@ public class PublicEmergencyController implements GenericController {
             @PathVariable("publicEmergencyId") UUID publicEmergencyId,
             @RequestBody @Valid PublicEmergencyRequestDTO dto) {
 
+        log.info("Atualizando um serviço publico: {}", dto.description());
+
         service.update(dto, publicEmergencyId);
 
         return ResponseEntity.noContent().build();
@@ -56,6 +62,8 @@ public class PublicEmergencyController implements GenericController {
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deletar.", description = "Deletar um contato público dentro do sistema.")
     public ResponseEntity<Void> deletePublicEmergency(@PathVariable("publicEmergencyId") UUID publicEmergencyId) {
+
+        log.info("Deletando um serviço publico de id: {}", publicEmergencyId);
 
         service.delete(publicEmergencyId);
 

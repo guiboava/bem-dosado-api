@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/task-types")
 @RequiredArgsConstructor
 @Tag(name = "Tipos de tarefa")
+@Slf4j
 public class TaskTypeController implements GenericController {
 
 
@@ -36,6 +38,8 @@ public class TaskTypeController implements GenericController {
     })
     public ResponseEntity<Void> createTaskType(@RequestBody @Valid TaskTypeRequestDTO dto) {
 
+        log.info("Cadastrando um novo tipo de tarefa: {}", dto.describe());
+
         URI uri = generateHeaderLocation(service.save(dto));
 
         return ResponseEntity.created(uri).build();
@@ -48,6 +52,8 @@ public class TaskTypeController implements GenericController {
             @PathVariable("taskTypeId") UUID taskTypeId,
             @RequestBody @Valid TaskTypeRequestDTO dto) {
 
+        log.info("Atualizando um tipo de tarefa: {}", taskTypeId);
+
         service.update(taskTypeId, dto);
 
         return ResponseEntity.noContent().build();
@@ -57,6 +63,8 @@ public class TaskTypeController implements GenericController {
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Deletar.", description = "Deletar um tipo de tarefa dentro do sistema.")
     public ResponseEntity<Void> deleteTaskType(@PathVariable("taskTypeId") UUID taskTypeId) {
+
+        log.info("Deletando um tipo de tarefa: {}", taskTypeId);
 
         service.delete(taskTypeId);
 
