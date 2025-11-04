@@ -17,7 +17,8 @@ public record PatientResponseDTO(UUID id,
                                  String cardNumber,
                                  String allergies,
                                  String medicationsDescription,
-                                 String note) {
+                                 String note,
+                                 String base64Image) {
 }
 
 

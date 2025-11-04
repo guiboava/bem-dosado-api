@@ -1,5 +1,6 @@
 package io.github.guiboava.bem_dosado.service;
 
+import io.github.guiboava.bem_dosado.controller.dto.PatientPatchRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientResponseDTO;
 import io.github.guiboava.bem_dosado.controller.mappers.PatientMapper;
@@ -41,6 +42,17 @@ public class PatientService {
         mapper.updateEntityFromDto(dto, patient);
         validator.validate(patient);
         repository.save(patient);
+    }
+
+    public void patchUpdate(UUID patientId, PatientPatchRequestDTO dto) {
+
+        Patient patient = getEntityById(patientId);
+
+        if (dto.base64Image() != null && !dto.base64Image().isBlank()) {
+            patient.setBase64Image(dto.base64Image());
+            repository.save(patient);
+        }
+
     }
 
     public void delete(UUID patientId) {

@@ -67,6 +67,9 @@ public class Patient {
     @Column(name = "note", nullable = false, length = 1000)
     private String note;
 
+    @Column(name = "base64_image")
+    private String base64Image;
+
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_user_id")

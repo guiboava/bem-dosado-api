@@ -1,5 +1,6 @@
 package io.github.guiboava.bem_dosado.controller;
 
+import io.github.guiboava.bem_dosado.controller.dto.PatientPatchRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientResponseDTO;
 import io.github.guiboava.bem_dosado.entity.model.enums.Dependency;
@@ -46,11 +47,23 @@ public class PatientController implements GenericController {
     @PutMapping("/{patientId}")
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Atualizar.", description = "Atualizar um paciente dentro do sistema.")
-    public ResponseEntity<Void> updatePatient(@PathVariable UUID patientId, @RequestBody @Valid PatientRequestDTO dto) {
+    public ResponseEntity<Void> updatePatient(@PathVariable UUID patientId,
+                                              @RequestBody @Valid PatientRequestDTO dto) {
 
         service.update(patientId, dto);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{patientId}")
+    @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
+    @Operation(summary = "Atualizar Imagem.", description = "Atualizar a imagem de um paciente dentro do sistema.")
+    public ResponseEntity<Void> patchPatient(@PathVariable UUID patientId,
+                                             @RequestBody @Valid PatientPatchRequestDTO dto) {
+
+        service.patchUpdate(patientId, dto);
+        return ResponseEntity.noContent().build();
+
     }
 
     @DeleteMapping("/{patientId}")

@@ -56,5 +56,9 @@ public record PatientRequestDTO(
 
         @Size(max = 1000, message = "A observação deve ter no máximo 1000 caracteres")
         @Schema(name = "notas")
-        String note) {
+        String note,
+
+        @Schema(name = "foto64")
+        String base64Image
+) {
 }
