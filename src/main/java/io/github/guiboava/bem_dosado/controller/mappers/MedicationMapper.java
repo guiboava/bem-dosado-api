@@ -19,4 +19,7 @@ public abstract class MedicationMapper {
 
     public abstract MedicationResponseDTO toDTO(Medication medication);
 
+    public abstract MedicationRequestDTO toRequestDTO(Medication medication);
+
+    public abstract Medication toEntityFromRequest(MedicationResponseDTO dto);
 }

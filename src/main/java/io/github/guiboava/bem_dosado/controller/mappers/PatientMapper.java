@@ -2,6 +2,7 @@ package io.github.guiboava.bem_dosado.controller.mappers;
 
 import io.github.guiboava.bem_dosado.controller.dto.PatientRequestDTO;
 import io.github.guiboava.bem_dosado.controller.dto.PatientResponseDTO;
+import io.github.guiboava.bem_dosado.controller.dto.UserRequestDTO;
 import io.github.guiboava.bem_dosado.entity.model.Patient;
 import io.github.guiboava.bem_dosado.util.NumberUtils;
 import jakarta.validation.Valid;
@@ -25,5 +26,6 @@ public abstract class PatientMapper {
     @Mapping(target = "medicationsDescription", source = "medicationsDescription")
     public abstract PatientResponseDTO toDTO(Patient patient);
 
+    public abstract PatientRequestDTO toRequestDTO(Patient patient);
 }
  

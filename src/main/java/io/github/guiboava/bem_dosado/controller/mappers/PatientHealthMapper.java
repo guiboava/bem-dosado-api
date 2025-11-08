@@ -19,5 +19,6 @@ public abstract class PatientHealthMapper {
 
     public abstract PatientHealthResponseDTO toDTO(PatientHealth patientHealth);
 
+    public abstract PatientHealthRequestDTO toRequestDTO(PatientHealth health);
 }
 

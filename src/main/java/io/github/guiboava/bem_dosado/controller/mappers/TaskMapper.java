@@ -38,4 +38,13 @@ public abstract class TaskMapper {
     @Mapping(target = "taskTypeId", source = "taskType.id")
     @Mapping(target = "medications", source = "medications")
     public abstract TaskResponseDTO toDTO(Task task);
+
+
+    @Mapping(target = "patientId", source = "patient.id")
+    @Mapping(target = "taskTypeId", source = "taskType.id")
+    @Mapping(target = "medicationsIds", expression = "java(task.getMedications().stream().map(Medication::getId).collect(java.util.stream.Collectors.toSet()))"
+    )
+    public abstract TaskRequestDTO toRequestDTO(Task task);
+
+
 }

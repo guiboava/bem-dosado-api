@@ -20,9 +20,10 @@ public abstract class PatientContactMapper {
     @Mapping(target = "phoneNumber", qualifiedByName = "onlyDigits")
     @Mapping(target = "createdDate", ignore = true)
     @Mapping(target = "updated_date", ignore = true)
-    public abstract void updateEntityFromDto(@Valid  PatientContactRequestDTO dto, @MappingTarget PatientContact patientContact);
+    public abstract void updateEntityFromDto(@Valid PatientContactRequestDTO dto, @MappingTarget PatientContact patientContact);
 
     public abstract PatientContactResponseDTO toDTO(PatientContact patientContact);
 
+    public abstract PatientContactRequestDTO toRequestDTO(PatientContact contact);
 }
 

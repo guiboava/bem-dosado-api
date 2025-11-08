@@ -82,9 +82,20 @@ public class PatientController implements GenericController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN','CAREGIVER','FAMILY')")
     @Operation(summary = "Listar.", description = "Procurar por pacientes dentro do sistema.")
-    public ResponseEntity<List<PatientResponseDTO>> searchPatient(@RequestParam(value = "name", required = false) String name, @RequestParam(value = "cpf", required = false) String cpf, @RequestParam(value = "birthDate", required = false) LocalDate birthDate, @RequestParam(value = "gender", required = false) Gender gender, @RequestParam(value = "cep", required = false) String cep, @RequestParam(value = "dependency", required = false) Dependency dependency, @RequestParam(value = "healthPlan", required = false) String healthPlan, @RequestParam(value = "cardNumber", required = false) String cardNumber, @RequestParam(value = "allergies", required = false) String allergies, @RequestParam(value = "medications", required = false) String medicationsDescription, @RequestParam(value = "note", required = false) String note) {
+    public ResponseEntity<List<PatientResponseDTO>> searchPatient(@RequestParam(value = "name", required = false) String name,
+                                                                  @RequestParam(value = "cpf", required = false) String cpf,
+                                                                  @RequestParam(value = "birthDate", required = false) LocalDate birthDate,
+                                                                  @RequestParam(value = "gender", required = false) Gender gender,
+                                                                  @RequestParam(value = "cep", required = false) String cep,
+                                                                  @RequestParam(value = "dependency", required = false) Dependency dependency,
+                                                                  @RequestParam(value = "healthPlan", required = false) String healthPlan,
+                                                                  @RequestParam(value = "cardNumber", required = false) String cardNumber,
+                                                                  @RequestParam(value = "allergies", required = false) String allergies,
+                                                                  @RequestParam(value = "medications", required = false) String medicationsDescription,
+                                                                  @RequestParam(value = "note", required = false) String note,
+                                                                  @RequestParam(value = "haveHealth", required = false) boolean haveHealth) {
 
-        return ResponseEntity.ok(service.searchByExample(name, cpf, birthDate, gender, cep, dependency, healthPlan, cardNumber, allergies, medicationsDescription, note));
+        return ResponseEntity.ok(service.searchByExample(name, cpf, birthDate, gender, cep, dependency, healthPlan, cardNumber, allergies, medicationsDescription, note, haveHealth));
 
     }
 

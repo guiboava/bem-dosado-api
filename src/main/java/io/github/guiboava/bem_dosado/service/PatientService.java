@@ -74,7 +74,8 @@ public class PatientService {
                                                     String cardNumber,
                                                     String allergies,
                                                     String medicationsDescription,
-                                                    String note) {
+                                                    String note,
+                                                    boolean haveHealth) {
         var patient = new Patient();
         patient.setName(name);
         patient.setCpf(cpf);
@@ -94,8 +95,14 @@ public class PatientService {
                 .withIgnoreCase()
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Example<Patient> patientExample = Example.of(patient, matcher);
-        return repository.findAll(patientExample)
-                .stream()
+
+        var patients = repository.findAll(patientExample).stream();
+
+        if (haveHealth) {
+            patients = patients.filter(p -> !p.getPatientHealths().isEmpty());
+        }
+
+        return patients
                 .map(mapper::toDTO)
                 .toList();
 

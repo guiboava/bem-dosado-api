@@ -28,7 +28,7 @@ public class TaskType {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "describe", nullable = false, length = 20)
+    @Column(name = "describe", nullable = false, length = 100)
     private String describe;
 
     @CreatedBy
